@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daimonas · Teogonía de Hesíodo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#d4af37;--gold-light:#f0d78c;--gold-glow:rgba(212,175,55,.55);--text:#f5e8c7;--text-dim:#c9b89a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cormorant Garamond',serif;color:var(--text);min-height:100vh;overflow-x:hidden}
+.sky{position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,rgba(8,10,20,.35),rgba(8,10,18,.82)),url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2000&q=80') center 30%/cover no-repeat;animation:drift 48s ease-in-out infinite alternate}
+@keyframes drift{from{background-position:center 28%;transform:scale(1)}to{background-position:center 36%;transform:scale(1.06)}}
+header{text-align:center;padding:1.2rem 1rem .3rem}
+.logo{height:clamp(60px,12vw,90px);margin-bottom:.4rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+header h1{font-family:'Cinzel',serif;letter-spacing:.28em;color:var(--gold-light);font-size:clamp(1.5rem,4vw,2.5rem);text-shadow:0 2px 16px rgba(0,0,0,.6)}
+header p{font-style:italic}
+.search-box{max-width:520px;margin:.4rem auto .2rem;padding:0 1rem}.search-box input{width:100%;background:rgba(10,12,20,.62);border:1px solid rgba(212,175,55,.4);color:var(--text);border-radius:24px;padding:.45rem .9rem;font:1.05rem 'Cormorant Garamond',serif}.gallery-wrapper{position:relative;max-width:1400px;margin:0 auto}
+.gallery-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,250px);gap:1.6rem;padding:3.2rem 4rem 1.2rem;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none}
+.gallery-track::-webkit-scrollbar{display:none}
+.gallery-track.dragging{cursor:grabbing;scroll-behavior:auto}
+.card{position:relative;background:linear-gradient(165deg,rgba(22,20,36,.88),rgba(12,14,24,.92));border:1px solid rgba(212,175,55,.4);border-radius:8px 8px 14px 14px;padding:1.2rem 1rem 1.3rem;text-align:center;cursor:pointer;animation:sway 4.6s ease-in-out infinite;transform-origin:top center;box-shadow:0 10px 28px rgba(0,0,0,.45)}.fav-btn{position:absolute;top:8px;right:8px;background:transparent;border:none;color:var(--gold);font-size:1.1rem;cursor:pointer}.quiz-opt{display:block;width:100%;margin:.35rem 0;text-align:left}
+.card::before{content:'';position:absolute;top:-50px;left:50%;width:2px;height:50px;background:linear-gradient(to bottom,transparent,var(--gold));transform:translateX(-50%)}
+.card::after{content:'';position:absolute;top:-58px;left:50%;width:12px;height:12px;border-radius:50%;background:var(--gold);transform:translateX(-50%)}
+@keyframes sway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+.card:hover,.card:focus{transform:scale(1.08) rotate(0);box-shadow:0 0 28px var(--gold-glow);border-color:var(--gold);outline:none;z-index:5}
+.card h2{font-family:'Cinzel',serif;color:var(--gold-light);font-size:1.1rem}
+.card .revelation{color:var(--text-dim);font-style:italic;margin:.2rem 0 .6rem}
+.card .chapter{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--gold);border:1px solid rgba(212,175,55,.45);padding:.2rem .55rem;border-radius:20px}
+.nav-arrow{position:absolute;top:46%;width:46px;height:46px;border-radius:50%;background:rgba(12,14,24,.82);border:1px solid var(--gold);color:var(--gold);font-size:1.3rem;cursor:pointer;z-index:20}
+.nav-arrow.left{left:10px}.nav-arrow.right{right:10px}
+.intro-quote,.api-box{max-width:760px;margin:.4rem auto 1rem;padding:1rem 1.2rem;text-align:center;background:rgba(10,12,20,.55);border:1px solid rgba(212,175,55,.28);border-radius:14px}
+.intro-quote blockquote{font-style:italic;color:var(--gold-light);font-size:1.15rem}
+.intro-quote cite{display:block;margin-top:.6rem;font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.12em;color:var(--text-dim)}.photo-credit{margin-top:.45rem;font-size:.78rem;color:var(--text-dim)}
+.api-box{margin-bottom:6.4rem;text-align:left}.api-toggle{background:transparent;border:1px solid var(--gold);color:var(--gold-light);font-family:'Cinzel',serif;letter-spacing:.08em;padding:.45rem .8rem;border-radius:20px;cursor:pointer}.api-panel{margin-top:.7rem}
+.api-box h3{font-family:'Cinzel',serif;color:var(--gold-light);letter-spacing:.12em;font-size:.95rem}
+.api-box form{display:flex;gap:.5rem;margin:.55rem 0;flex-wrap:wrap}
+.api-box input{flex:1;min-width:180px;background:rgba(0,0,0,.35);border:1px solid rgba(212,175,55,.35);color:var(--text);border-radius:8px;padding:.35rem .6rem;font:1rem 'Cormorant Garamond',serif}
+.api-box button,.game-actions button,.back-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;border-radius:20px;padding:.4rem .8rem;cursor:pointer}
+#apiOut{color:var(--text-dim);line-height:1.45}
+.music-wrap{position:fixed;top:12px;left:12px;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:.25rem}
+.music-corner{background:rgba(8,10,16,.82);border:1px solid rgba(212,175,55,.45);color:var(--gold-light);font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.06em;border-radius:16px;padding:.35rem .75rem;cursor:pointer}
+.music-credit{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.08em;color:var(--text-dim);padding-left:.2rem;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.top-controls{position:fixed;top:12px;right:12px;z-index:50;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:min(520px,calc(100vw - 80px))}
+.search-box{margin:0;max-width:none;padding:0;flex:1;min-width:140px}
+.search-box input{width:100%;background:rgba(8,10,16,.82);border:1px solid rgba(212,175,55,.45);color:var(--text);border-radius:16px;padding:.4rem .8rem;font:.95rem 'Cormorant Garamond',serif;outline:none}
+.search-box input:focus{border-color:var(--gold)}
+.filter-select{background:rgba(8,10,16,.82);border:1px solid rgba(212,175,55,.45);color:var(--gold-light);font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.06em;border-radius:16px;padding:.4rem .8rem;cursor:pointer;outline:none;min-width:120px}
+.filter-select:focus{border-color:var(--gold)}
+.side-menu{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:.2rem;z-index:50;background:rgba(8,10,16,.94);border-top:1px solid rgba(212,175,55,.28);padding:.45rem .4rem;flex-wrap:wrap}
+.side-menu button{background:transparent;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:.78rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;padding:.4rem .7rem;letter-spacing:.04em;white-space:nowrap;border-radius:12px}
+.side-menu button span{font-size:1rem}
+.side-menu button.active,.side-menu button:hover{color:var(--gold-light);background:rgba(212,175,55,.12)}
+.quiz-screen{align-items:center;justify-content:center}
+.quiz-panel{width:min(640px,100%);min-height:280px}
+.quiz-opt{display:block;width:100%;margin:.45rem 0;text-align:left;font-size:1.15rem;padding:.7rem 1rem}
+.quiz-opt.good{background:rgba(80,160,90,.35);color:#e8ffe8;border-color:#8dca8d}
+.quiz-opt.bad{background:rgba(160,70,70,.35);color:#ffe8e8;border-color:#d09090}
+.quiz-feedback{min-height:1.6rem;font-size:1.15rem;margin:.4rem 0 .2rem}
+.api-box{margin-bottom:6.2rem}
+.detail-screen,.game-screen{position:fixed;inset:0;display:none}
+.detail-screen.visible{display:flex;z-index:100}
+.game-screen.open{display:flex;z-index:90}
+.detail-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.4)}
+.detail-veil{position:absolute;inset:0;background:rgba(8,10,18,.55)}
+.detail-layout{position:relative;z-index:2;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:1rem}
+.side-nav{width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);background:rgba(10,12,20,.7);color:var(--gold);font-size:1.4rem;cursor:pointer}
+.detail-panel{width:min(780px,100%);max-height:calc(100vh - 2rem);overflow:auto;background:rgba(12,14,24,.86);border:1px solid rgba(212,175,55,.35);border-radius:16px;padding:1.2rem;text-align:center}
+.portrait{width:min(190px,66%);aspect-ratio:3/4;object-fit:cover;border-radius:12px;border:1px solid rgba(212,175,55,.45)}
+.detail-panel h2{font-family:'Cinzel',serif;color:var(--gold-light);letter-spacing:.1em}
+.subtitle{font-style:italic;color:var(--text-dim);margin:.2rem 0 .7rem}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin-bottom:.6rem}
+.facts div,.block{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.22);border-radius:10px;padding:.5rem .65rem;text-align:left;margin-bottom:.4rem;line-height:1.45}
+.facts strong,.block strong{display:block;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.08em;color:var(--gold)}
+.source,.hint{color:var(--text-dim);font-size:.85rem;font-style:italic;margin-top:.35rem}
+.game-screen{flex-direction:column;align-items:center;padding:1rem 1rem 5rem;background:rgba(8,10,18,.92);overflow:auto}
+.game-screen h2{font-family:'Cinzel',serif;color:var(--gold-light);letter-spacing:.14em}
+.game-meta{color:var(--text-dim);margin:.35rem 0 .7rem;text-align:center}
+.game-board{display:grid;grid-template-columns:repeat(4,minmax(68px,108px));gap:.5rem}
+.game-board.wide{grid-template-columns:repeat(6,minmax(62px,92px))}.game-board.wider{display:grid;grid-template-columns:repeat(9,minmax(48px,78px));grid-template-rows:repeat(4,auto);max-width:100%;justify-content:center}
+.mem-card{aspect-ratio:3/4;border:1px solid rgba(212,175,55,.4);border-radius:10px;background:#141222;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .45s}
+.mem-card.flipped,.mem-card.matched{transform:rotateY(180deg)}
+.mem-card .face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:10px}
+.mem-card .back{color:var(--gold);font-family:'Cinzel',serif;background:#1c1830}
+.mem-card .front{transform:rotateY(180deg)}
+.mem-card img{width:100%;height:100%;object-fit:cover}
+.mem-card .front span{position:absolute;left:0;right:0;bottom:0;background:rgba(8,10,16,.78);color:var(--gold-light);font-size:.62rem;font-family:'Cinzel',serif}
+.game-actions{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center;margin-top:.8rem}
+@media(max-width:768px){
+.facts{grid-template-columns:1fr}
+.game-board,.game-board.wide,.game-board.wider{grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:.35rem;max-width:100%;padding:0 .5rem}
+.game-board.wider{grid-template-columns:repeat(4,minmax(60px,1fr))}
+.mem-card{aspect-ratio:3/4;font-size:.7rem}
+.gallery-track{grid-auto-columns:minmax(160px,190px);padding:3rem 1rem 1rem}
+.intro-quote,.api-box{margin-left:.7rem;margin-right:.7rem}
+.music-wrap{top:8px;left:8px}
+.top-controls{top:48px;right:8px;left:8px;max-width:none;justify-content:flex-start}
+.search-box{min-width:0;flex:1}
+.side-menu{bottom:0;left:0;right:0;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start}
+.side-menu button{font-size:.72rem;padding:.35rem .5rem}
+.gallery-wrapper{padding-left:0}
+.game-screen{padding:1rem .5rem 5.5rem}
+.game-actions{gap:.3rem}
+.game-actions button{font-size:.75rem;padding:.35rem .6rem}
+}
+
+.complete-burst{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;pointer-events:none;background:rgba(8,10,18,.35)}
+.complete-burst p{font-family:'Cinzel',serif;color:var(--gold-light);font-size:clamp(1.4rem,4vw,2.4rem);letter-spacing:.14em;animation:pop 1.1s ease}
+@keyframes pop{0%{transform:scale(.6);opacity:0}40%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:0}}
+.mem-card.matched{box-shadow:0 0 16px var(--gold-glow)}
+.timer{color:var(--gold-light);font-family:'Cinzel',serif;letter-spacing:.08em}
+.prologue{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;background:radial-gradient(circle at center, rgba(20,16,32,.72), rgba(8,10,18,.92)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80') center/cover}
+.prologue h2{font-family:'Cinzel',serif;color:var(--gold-light);font-size:clamp(1.6rem,4vw,2.8rem);letter-spacing:.08em;max-width:760px}
+.prologue p{max-width:640px;margin:.8rem 0 1.2rem;font-size:1.2rem}
+.prologue-kicker{font-family:'Cinzel',serif;letter-spacing:.2em;color:var(--gold);font-size:.8rem}
+.prologue button{background:transparent;border:1px solid var(--gold);color:var(--gold-light);font-family:'Cinzel',serif;letter-spacing:.14em;padding:.6rem 1.4rem;border-radius:24px;cursor:pointer}
+.prologue.hidden{opacity:0;pointer-events:none;transition:opacity .6s}
+</style>
+</head>
+<body>
+<div class="prologue" id="prologue">
+  <p class="prologue-kicker">HESÍODO · TEOGONÍA</p>
+  <h2>Con las Musas heliconias comencemos el canto.</h2>
+  <p>Ellas habitan el grande y sagrado monte Helicón, y danzan en torno a la fuente violácea. De su memoria nacen los nombres de esta enciclopedia: ideas con figura de mujer, no fuerzas de la naturaleza.</p>
+  <button type="button" id="enterPage">Entrar</button>
+</div>
+<div class="sky"></div>
+<audio id="bgm" preload="none"></audio>
+<header>
+  <img class="logo" src="logo.png" alt="Logo Daimonas">
+  <h1>DAIMONAS</h1>
+  <p>Teogonía de Hesíodo · Enciclopedia de daimonas</p>
+</header>
+
+<div class="gallery-wrapper">
+  <button class="nav-arrow left" id="btnLeft" aria-label="Anterior">‹</button>
+  <button class="nav-arrow right" id="btnRight" aria-label="Siguiente">›</button>
+  <div class="gallery-track" id="gallery"></div><div class="gallery-track" id="gallery2" hidden></div>
+</div>
+<section class="intro-quote">
+  <blockquote>«Con las Musas heliconias comencemos el canto: ellas habitan el grande y sagrado monte Helicón.»</blockquote>
+  <cite>HESÍODO · TEOGONÍA</cite>
+  <p class="photo-credit">Fondos verdaderamente aleatorios (Picsum) buscados en el momento al abrir cada ficha. Logo local. Retratos en /images/.</p>
+</section>
+<div class="music-wrap">
+  <button id="musicBtn" class="music-corner" type="button">♫ Música</button>
+  <span class="music-credit">G. F. Handel</span>
+</div>
+<div class="top-controls">
+  <form class="search-box" id="searchForm" style="margin:0">
+    <input id="searchInput" type="search" placeholder="Buscar…" aria-label="Buscar por nombre o concepto">
+  </form>
+  <select id="filterSelect" class="filter-select" aria-label="Filtrar por categoría">
+    <option value="all">Todos</option>
+    <option value="titans">Titanides</option>
+    <option value="daimonas">Daimonas</option>
+    <option value="muses">Musas</option>
+    <option value="charites">Cárites</option>
+    <option value="horai">Horas</option>
+  </select>
+</div>
+<nav class="side-menu">
+  <button id="openGame" type="button"><span>🂠</span>Memorice</button>
+  <button id="openQuiz" type="button"><span>❓</span>Quiz</button>
+  <button id="openFavs" type="button"><span>★</span>Favoritos</button>
+  <button id="openGloss" type="button"><span>📖</span>Glosario</button>
+  <button id="openNotes" type="button"><span>ⓘ</span>Aclaraciones</button>
+</nav>
+<div class="game-screen" id="gameScreen">
+  <h2>MEMORICE</h2>
+  <p class="game-meta" id="gameMeta"></p>
+  <div class="game-board" id="gameBoard"></div>
+  <div class="game-actions">
+    <button type="button" id="level1">Nivel 1 · 6</button>
+    <button type="button" id="level2">Nivel 2 · 12</button>
+    <button type="button" id="level3">Nivel 3 · 18</button>
+    <button type="button" id="restartGame">Otra partida</button>
+    <button type="button" id="closeGame">Volver</button>
+  </div>
+</div>
+
+
+<div class="game-screen" id="glossScreen">
+  <h2>GLOSARIO</h2>
+  <div class="detail-panel" style="margin-top:1rem">
+    <div class="block"><strong>DAIMON</strong>Figura divina menor o espíritu. Aquí nombra una idea, no un demonio.</div>
+    <div class="block"><strong>TEOGONÍA</strong>Poema de Hesíodo sobre el nacimiento de los dioses.</div>
+    <div class="block"><strong>TITANIDE</strong>Hija de Urano y Gea, de la generación anterior a los Olímpicos.</div>
+    <div class="block"><strong>HORA</strong>Una de las diosas del orden del año y de la ciudad. En Hesíodo son Eunomía, Dike e Irene.</div>
+    <div class="block"><strong>CÁRITES</strong>Las Gracias. El grupo antiguo es Aglaya, Eufrosina y Talía. Otro relato llama Cárites jóvenes a Euclea, Eutenia, Eufeme y Filofrósine.</div>
+    <div class="block"><strong>SÉQUITO</strong>El grupo que acompaña a un dios en el mito o en el culto.</div>
+    <div class="block"><strong>POLIS</strong>La ciudad griega, con sus leyes, fiestas y altares.</div>
+    <div class="block"><strong>OCEÁNIDE</strong>Hija de Océano y Tetis. Algunas personificaciones entran en esa lista.</div>
+    <button class="back-btn" id="closeGloss" type="button">Volver</button>
+  </div>
+</div>
+<div class="game-screen quiz-screen" id="quizScreen">
+  <div class="detail-panel quiz-panel">
+    <h2>QUIZ</h2>
+    <p class="quiz-feedback" id="quizMeta">Elige el nombre del concepto.</p>
+    <div id="quizBox"></div>
+    <div class="game-actions"><button type="button" id="closeQuiz">Volver</button></div>
+  </div>
+</div>
+
+<div class="game-screen" id="notesScreen">
+  <h2>ACLARACIONES</h2>
+  <div class="detail-panel" style="margin-top:1rem">
+    <div class="block"><strong>QUÉ ES UN DAIMON</strong>En griego, daimon no significa demonio. Es un espíritu o una figura divina menor. En esta página son sobre todo nombres de ideas: la justicia, la paz, el olvido, la victoria.</div>
+    <div class="block"><strong>LA TEOGONÍA</strong>Es un poema de Hesíodo, hacia el siglo VIII a. C. Cuenta cómo nacen los dioses, desde el Caos y Gea hasta Zeus. Muchas de estas figuras aparecen ahí, en listas de hijos de la Noche, de Zeus o de las Titanides. Otras llegan en Pausanias, Platón o en cultos de la ciudad.</div>
+    <div class="block"><strong>QUÉ ENTRA Y QUÉ NO</strong>La enciclopedia se limita a daimonas de conceptos abstractos. No incluye fuerzas de la naturaleza, como el viento o el río, ni espíritus nocivos de castigo o enfermedad. Tampoco sustituye a los grandes dioses.</div>
+    <div class="block"><strong>TITANES, DIOSES Y DAIMONAS</strong>Los Titanes y las Titanides son la generación anterior a los Olímpicos: Febe, Mnemósine, Temis, Tea. Los dioses olímpicos, como Zeus o Atenea, tienen mitos largos y templos grandes. Una daimona suele ser una idea con nombre. Las Musas son hijas de Mnemósine y Zeus: no son Titanides ni daimonas de una sola virtud.</div>
+    <div class="block"><strong>POR QUÉ IMPORTA HOY</strong>Estas palabras siguen en el idioma: euforia, higiene, democracia, némesis. Verlas como figuras ayuda a leer el poema y a notar que los griegos daban nombre a ideas que nosotros también usamos, como la tregua, la confianza o la medida.</div>
+    <button class="back-btn" id="closeNotes" type="button">Volver</button>
+  </div>
+</div>
+
+<div class="detail-screen" id="detailScreen">
+  <div class="detail-bg" id="detailBg"></div>
+  <div class="detail-veil"></div>
+  <div class="detail-layout">
+    <button class="side-nav" id="prevDaimon">‹</button>
+    <div class="detail-panel" id="detailContent"></div>
+    <button class="side-nav" id="nextDaimon">›</button>
+  </div>
+</div>
+<script>
+
+const sound = (() => {
+  let ctx;
+  function ac(){ ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if(ctx.state==='suspended') ctx.resume(); return ctx; }
+  function tone(freq, dur, type){
+    try {
+      const c = ac();
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.08, c.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      o.connect(g); g.connect(c.destination);
+      o.start(); o.stop(c.currentTime + dur);
+    } catch(e){}
+  }
+  return {
+    tap(){ tone(520, 0.08, 'triangle'); },
+    ok(){ tone(660, 0.1, 'sine'); setTimeout(()=>tone(880, 0.12, 'sine'), 90); },
+    bad(){ tone(220, 0.16, 'sawtooth'); },
+    win(){ [523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f, 0.18, 'triangle'), i*120)); }
+  };
+})();
+function burst(text){
+  const el = document.createElement('div');
+  el.className = 'complete-burst';
+  el.innerHTML = `<p>${text}</p>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 1200);
+}
+document.addEventListener('click', e => {
+  if(e.target.closest('button')) sound.tap();
+});
+
+// === Fotos aleatorias en tiempo real (Unsplash Source + API) ===
+const UNSPLASH_ACCESS_KEY = 'TU_ACCESS_KEY_AQUI'; // Opcional: pon tu Access Key para usar la API oficial
+
+function getFreshRandomPhoto(query = 'nature,meadow,forest,mountain,landscape') {
+  const bust = Date.now() + Math.floor(Math.random() * 100000);
+  // Picsum: foto verdaderamente aleatoria generada en el momento (funciona y carga al instante)
+  return `https://picsum.photos/1600/900?random=${bust}`;
+}
+
+async function fetchRandomUnsplash(query = 'nature,meadow,forest,mountain,landscape') {
+  // Si hay una clave real, intentamos la API oficial primero
+  if (UNSPLASH_ACCESS_KEY && UNSPLASH_ACCESS_KEY !== 'TU_ACCESS_KEY_AQUI') {
+    try {
+      const bust = Date.now();
+      const url = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}&sig=${bust}`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        return (data.urls.regular || data.urls.full) + `&sig=${bust}`;
+      }
+    } catch (e) {
+      console.warn('API oficial falló, usando Source:', e);
+    }
+  }
+  // Siempre devolvemos una URL que busca una foto nueva en ese momento
+  return getFreshRandomPhoto(query);
+}
+
+async function setSkyBackground() {
+  const sky = document.querySelector('.sky');
+  if (sky) {
+    const url = await fetchRandomUnsplash('meadow,nature,field,landscape');
+    sky.style.backgroundImage = `linear-gradient(180deg,rgba(8,10,20,.35),rgba(8,10,18,.82)),url('${url}')`;
+    sky.style.backgroundPosition = 'center 30%';
+    sky.style.backgroundSize = 'cover';
+  }
+}
+setSkyBackground();
+
+const daimones = [
+{id:1, name:"Febe", greek:"Φοίβη", revelation:"El pensamiento", icon:"🌕", category:"titans", chapter:"Capítulo 1", parentage:"Urano y Gea", domain:"Intelecto y brillo", symbol:"Corona de oro", photo:"images/1.jpg", quote:"«…y Febe, de corona de oro…» — Hesíodo, Teogonía 136.", place:"No tuvo un gran culto propio. Se la recuerda como Titanide, esposa de Ceo, en la genealogía común de toda Grecia.", meaning:"Su nombre significa «la brillante». Para los griegos era la luz del entendimiento que pasa a Leto y, con ella, a Apolo y Artemisa.", extra:"Reside en el linaje de los Titanes. No formaba el séquito de un Olímpico; es antepasada de Leto.", source:"Theoi: Phoebe; Hesíodo, Teogonía 132-136 y 404-410", relato:"Susurraba visiones lejanas a través del viento que cruzaba los valles solitarios, desvelando verdades que cambiaban el destino de los reyes. Dicen que caminaba en silencio bajo las sombras nocturnas para escuchar los pensamientos más profundos del mundo."},
+{id:2, name:"Mnemósine", greek:"Μνημοσύνη", revelation:"El pasado", icon:"🪞", category:"titans", chapter:"Capítulo 2", parentage:"Urano y Gea", domain:"La memoria", symbol:"Las Musas", photo:"images/2.jpg", quote:"«En Pieria, Mnemósine… dio a luz a las Musas.» — Hesíodo, Teogonía 53-62.", place:"Se la situaba en las colinas de Eleuter y en Pieria. En Lebadea (Beocia) los consultantes del oráculo de Trofonio bebían de una fuente llamada Mnemósine.", meaning:"Sin memoria no hay canto ni historia. Los reyes y los poetas reciben de ella la palabra que recuerda lo que fue.", extra:"Madre de las Musas con Zeus. No es una daimon del séquito, sino Titanide.", source:"Theoi: Mnemosyne; Hesíodo, Teogonía 53-62 y 915-917", relato:"Bebía del manantial donde se guardan los secretos del pasado para mantener vivo cada acontecimiento ocurrido desde el inicio del mundo. Con solo rozar la frente de los poetas, les permitía revivir guerras lejanas y cantos olvidados."},
+{id:3, name:"Temis", greek:"Θέμις", revelation:"La justicia", icon:"⚖️", category:"titans", chapter:"Capítulo 3", parentage:"Urano y Gea", domain:"Ley divina y orden", symbol:"La balanza", photo:"images/3.jpg", quote:"«Después tomó por esposa a la brillante Temis, que dio a luz a las Horas.» — Hesíodo, Teogonía 901.", place:"Tenía culto antiguo en Delfos antes de Apolo, y altares en varias ciudades. Pausanias la nombra en Olimpia y en otros santuarios.", meaning:"Temis es la norma que está por encima del capricho: la costumbre justa, el derecho de reunión y el consejo.", extra:"Consejera de Zeus.", source:"Theoi: Themis; Hesíodo, Teogonía 901-906", relato:"Permanecía erguida en el centro de las asambleas para garantizar que las palabras pronunciadas se mantuvieran firmes y verdaderas. Su presencia devolvía la tranquilidad a los poblados divididos por disputas ancestrales."},
+{id:4, name:"Tea", greek:"Θεία", revelation:"La claridad", icon:"☀️", category:"titans", chapter:"Capítulo 4", parentage:"Urano y Gea", domain:"Vista y resplandor", symbol:"La luz", photo:"images/4.jpg", quote:"«Tea se unió a Hiperión y dio a luz al gran Helios, a Selene y a Eos.» — Hesíodo, Teogonía 371-374.", place:"No tiene templo propio bien atestiguado. Su lugar es la genealogía titánica, compartida en toda Grecia.", meaning:"Su nombre se relaciona con «divina» y con ver. Es la claridad de la que nacen el sol, la luna y la aurora.", extra:"Esposa de Hiperión. No pertenece al séquito de un dios menor: es madre de Helios, Selene y Eos.", source:"Theoi: Theia; Hesíodo, Teogonía 371-374", relato:"Extendía un resplandor dorado sobre las altas cumbres justo al despertar la mañana, devolviendo la luz al mundo tras la oscuridad. Los viajeros confiaban en su tenue destello para encontrar el camino de regreso a casa."},
+{id:5, name:"Filotes", greek:"Φιλότης", revelation:"El afecto", icon:"🤝", category:"daimonas", chapter:"Capítulo 5", parentage:"Nix, sin padre", domain:"Amistad y afecto", symbol:"El vínculo", photo:"images/5.jpg", quote:"Hesíodo la nombra entre los hijos de la Noche, junto a Apate y Geras. — Teogonía 224.", place:"No tuvo templo. Es una personificación de la Teogonía, conocida en la poesía de toda Grecia.", meaning:"Filotes es el afecto que une a las personas: amistad y cercanía, lo contrario de la discordia.", extra:"Hija de Nix. No tiene fiesta propia ni residencia fija.", source:"Theoi: Philotes; Hesíodo, Teogonía 211-225", relato:"Unía los destinos de seres distantes mediante hilos invisibles que resistían las peores tormentas y distancias. Gracias a su paso callado, los antiguos rivales encontraban razones para sentarse a compartir la misma mesa."},
+{id:6, name:"Elpis", greek:"Ἐλπίς", revelation:"La esperanza", icon:"🕊️", category:"daimonas", chapter:"Capítulo 6", parentage:"Relato de Pandora", domain:"La esperanza", symbol:"La jarra", photo:"images/6.jpg", quote:"«Solo Elpis quedó dentro, bajo el borde de la jarra.» — Hesíodo, Trabajos y días 96-99.", place:"No tuvo culto griego importante. Los romanos sí veneraron a Spes. El relato es panhelénico.", meaning:"Elpis es la expectativa que queda entre los humanos cuando los males ya han salido. Los griegos discutían si era consuelo o espera incierta.", extra:"No forma séquito. Queda en la jarra de Pandora por voluntad de Zeus.", source:"Theoi: Elpis; Hesíodo, Trabajos y días 90-105", relato:"Permaneció atrapada en el fondo de una vasija oscura mientras el resto de las fuerzas se dispersaban por la tierra. Al emerger, caminó entre los hombres fatigados ofreciéndoles el aliento necesario para continuar un día más."},
+{id:7, name:"Oizís", greek:"Ὀϊζύς", revelation:"El dolor", icon:"💧", category:"daimonas", chapter:"Capítulo 7", parentage:"Nix", domain:"El sufrimiento", symbol:"La sombra", photo:"images/7.jpg", quote:"Hesíodo llama «dolorosa» a Oizís entre los hijos de Nix. — Teogonía 214.", place:"Sin templo ni ciudad de culto. Aparece en la poesía genealógica.", meaning:"Es la pena, la fatiga y la miseria que acompañan la vida humana.", extra:"Hija de la Noche. Sin fiesta ni casa propia.", source:"Theoi: Oizys; Hesíodo, Teogonía 211-225", relato:"Caminaba con pasos lentos y pesados por los senderos desiertos, dejando una estela de silencio a su alrededor. Se decía que acompañaba a los viajeros solitarios cuando la carga de la marcha se volvía insoportable."},
+{id:8, name:"Eris", greek:"Ἔρις", revelation:"La ambición", icon:"⚔️", category:"daimonas", chapter:"Capítulo 8", parentage:"Nix", domain:"La discordia", symbol:"La contienda", photo:"images/8.jpg", quote:"«Y la odiada Éride dio a luz al penoso Ponos…» — Hesíodo, Teogonía 226.", place:"Sin templo. En Trabajos y días Hesíodo distingue una Éride mala y otra que empuja al trabajo bien hecho.", meaning:"Es la rivalidad: puede destruir o espolear. De ella nacen peleas, mentiras, hambre y el juramento falso.", extra:"Hija de Nix. No tiene residencia; actúa entre los humanos.", source:"Theoi: Eris; Hesíodo, Teogonía 225-232", relato:"Deslizaba pequeñas palabras ambiguas al oído de los gobernantes durante los banquetes de celebración. Un leve gesto de su mano bastaba para transformar un festín de paz en una disputa que duraba generaciones."},
+{id:9, name:"Dike", greek:"Δίκη", revelation:"La moral", icon:"⚖️", category:"daimonas", chapter:"Capítulo 9", parentage:"Zeus y Temis", domain:"La justicia", symbol:"La balanza", photo:"images/9.jpg", quote:"Hesíodo dice que Dique se sienta junto a Zeus y le cuenta las injusticias de los hombres. — Trabajos y días 256-262.", place:"Como Hora, se la honraba con Eunomía e Irene en varias ciudades. En Atenas la justicia tenía altares cívicos.", meaning:"Dique es el juicio recto: lo que corresponde a cada uno. Si se la desprecia, denuncia ante Zeus.", extra:"Una de las Horas, séquito del orden de Zeus. Hermana de Eunomía e Irene.", source:"Theoi: Dike; Hesíodo, Teogonía 901-906", relato:"Recorría las ciudades observando en silencio el trato que los hombres se daban entre sí. Cuando la injusticia reinaba en una casa, se alejaba hacia las montañas dejando tras de sí un frío difícil de borrar."},
+{id:10, name:"Pistis", greek:"Πίστις", revelation:"La confianza", icon:"🗝️", category:"daimonas", chapter:"Capítulo 10", parentage:"Personificación cívica", domain:"La buena fe", symbol:"El juramento", photo:"images/10.jpg", quote:"Teognis dice que Pistis abandonó a los hombres y volvió al Olimpo. — fragmento 1135.", place:"Su equivalente romana, Fides, sí tuvo templo en Roma. En Grecia es sobre todo idea de la palabra cumplida.", meaning:"Pistis es fiarse de lo prometido. Sin ella, los acuerdos no sostienen la ciudad.", extra:"Se la nombra junto a Dique y las Cárites. No tiene casa propia en los mitos.", source:"Theoi: Pistis; Teognis 1135", relato:"Guardaba los juramentos en una caja de bronce que nunca permitía abrir a nadie. Aquellos que recibían su bendición conservaban la lealtad intacta aun frente a las mayores adversidades."},
+{id:11, name:"Tique", greek:"Τύχη", revelation:"El azar", icon:"🎲", category:"daimonas", chapter:"Capítulo 11", parentage:"Océano y Tetis, o Zeus", domain:"La fortuna", symbol:"El timón", photo:"images/11.jpg", quote:"Hesíodo la incluye entre las Oceánides. — Teogonía 360.", place:"Tuvo culto fuerte en la época helenística: templos y estatuas en Tebas, Élide, Argos y muchas ciudades. A menudo lleva timón y cornucopia.", meaning:"Tique es lo que llega sin que se pueda prever: prosperidad o revés. Cada ciudad podía tener su propia Tique.", extra:"A veces se la acerca a las Moiras. No vive en un monte fijo; acompaña a la ciudad.", source:"Theoi: Tyche; Hesíodo, Teogonía 360; Pausanias", relato:"Lanzaba dados de piedra sobre los caminos y decidía el destino de los imperios con un simple giro de su muñeca. Podía arruinar al hombre más rico al atardecer o elevar al mendigo al amanecer."},
+{id:12, name:"Aglaya", greek:"Ἀγλαΐα", revelation:"El esplendor", icon:"✨", category:"daimonas", chapter:"Capítulo 12", parentage:"Zeus y Eurínome", domain:"El brillo y el esplendor", symbol:"La corona", photo:"images/12.jpg", quote:"Hesíodo nombra a Aglaya la primera de las tres Cárites. — Teogonía 907-909.", place:"Culto compartido con sus hermanas en Orcómeno, Atenas y Esparta.", meaning:"Aglaya es el esplendor: lo que brilla con buen aspecto y buena obra.", extra:"Una de las Cárites antiguas. En otra tradición es esposa de Hefesto y madre de las Cárites jóvenes.", source:"Theoi: Aglaea; Hesíodo, Teogonía 907-911", relato:"Entraba en la sala cuando la luz ya bajaba y devolvía brillo a los rostros cansados. A su paso, lo opaco parecía recién pulido."},
+{id:13, name:"Eufrosina", greek:"Εὐφροσύνη", revelation:"La alegría", icon:"🌸", category:"daimonas", chapter:"Capítulo 13", parentage:"Zeus y Eurínome", domain:"El buen ánimo", symbol:"La danza", photo:"images/83.jpg", quote:"Hesíodo la nombra entre las tres Cárites de hermosas mejillas. — Teogonía 907-909.", place:"Bailaba con sus hermanas en las fiestas de Orcómeno, Atenas y Esparta.", meaning:"Eufrosina es el ánimo alegre que se comparte, no la risa sola.", extra:"Una de las Cárites antiguas. Acompaña a Afrodita en el séquito del Olimpo.", source:"Theoi: Euphrosyne; Hesíodo, Teogonía 907-911", relato:"Abría el corro cuando el salón pesaba de silencio. Sus pasos no apuraban a nadie: solo hacían que los pies quisieran seguirla."},
+{id:14, name:"Talía", greek:"Θαλία", revelation:"La floración", icon:"🌷", category:"daimonas", chapter:"Capítulo 14", parentage:"Zeus y Eurínome", domain:"La abundancia festiva", symbol:"Las flores", photo:"images/84.jpg", quote:"Hesíodo cierra la tríada de las Cárites con Talía. — Teogonía 907-909.", place:"Culto junto a Aglaya y Eufrosina en las fiestas de las Cárites.", meaning:"Talía es lo que florece: la mesa llena, la fiesta que prende.", extra:"Una de las Cárites antiguas. No es la Musa de la comedia, que lleva el mismo nombre en otras listas.", source:"Theoi: Thalia Kharis; Hesíodo, Teogonía 907-911", relato:"Dejaba flores en el borde de la mesa y el banquete dejaba de ser solo comida. Donde ella se sentaba, la celebración encontraba su centro."},
+{id:15, name:"Ananque", greek:"Ἀνάγκη", revelation:"Lo inevitable", icon:"⛓️", category:"daimonas", chapter:"Capítulo 15", parentage:"Tradición órfica", domain:"La necesidad", symbol:"El huso", photo:"images/13.jpg", quote:"Platón la pone por encima del sorteo de las vidas, madre de las Moiras en la República X.", place:"En Corinto compartía santuario con Bía. Casi no se le hacían ofrendas: no se la puede doblegar.", meaning:"Ananque es lo que tiene que ocurrir. Ni los dioses la discuten.", extra:"En la tradición órfica se enrosca con Cronos (el Tiempo) alrededor del cosmos.", source:"Theoi: Ananke; Platón, República X", relato:"Trenzaba los hilos inquebrantables de la existencia, aquellos que ni los mismos dioses podían romper. Se situaba en el centro del cosmos observando cómo el universo giraba en torno a sus leyes inflexibles."},
+{id:16, name:"Eleuteria", greek:"Ἐλευθερία", revelation:"La libertad", icon:"🕊️", category:"daimonas", chapter:"Capítulo 16", parentage:"Personificación cívica", domain:"La libertad de la ciudad", symbol:"El gorro", photo:"images/14.jpg", quote:"Se invocaba al liberar una ciudad. Pausanias recuerda cultos de Eleuteria ligados a victorias.", place:"Atenas y otras polis celebraban fiestas Eleuterias tras expulsar tiranos o persas.", meaning:"Eleuteria es no vivir bajo un amo. Es un valor de la polis, no un mito de familia.", extra:"No tiene residencia mítica fija.", source:"Theoi: Eleutheria", relato:"Abría las puertas de las ciudades cuando el aire se volvía demasiado estrecho para respirar. Quienes la seguían dejaban atrás cadenas y regresaban a las plazas con la frente en alto."},
+{id:17, name:"Eunomía", greek:"Εὐνομία", revelation:"La legalidad", icon:"📜", category:"daimonas", chapter:"Capítulo 17", parentage:"Zeus y Temis", domain:"El buen orden", symbol:"La ley escrita", photo:"images/15.jpg", quote:"Hesíodo la nombra entre las Horas, hijas de Zeus y Temis. — Teogonía 902.", place:"Se la honraba con sus hermanas Dique e Irene en cultos cívicos.", meaning:"Eunomía es que las leyes se cumplan y la ciudad no caiga en el desorden.", extra:"Hora, séquito del orden de Zeus.", source:"Theoi: Eunomia; Hesíodo, Teogonía 901-903", relato:"Ordenaba las tablillas de las leyes para que ninguna quedara torcida ni escondida. Bajo su mirada, los acuerdos dejaban de ser promesas sueltas y se volvían costumbre."},
+{id:18, name:"Irene", greek:"Εἰρήνη", revelation:"La paz", icon:"🌿", category:"daimonas", chapter:"Capítulo 18", parentage:"Zeus y Temis", domain:"La paz", symbol:"El ramo y el niño Pluto", photo:"images/16.jpg", quote:"Hesíodo la lista con Eunomía y Dique. — Teogonía 902.", place:"En Atenas tenía altar y fiesta, las Sinicias o ritos de paz; una estatua de Céfisodoto la muestra con el niño Riqueza.", meaning:"Irene es la tregua estable que deja crecer la cosecha.", extra:"Hora. A veces lleva en brazos a Pluto, la riqueza.", source:"Theoi: Eirene; Pausanias 1.8.2", relato:"Entraba en los campos cuando las armas ya estaban cansadas y dejaba crecer de nuevo el trigo entre los surcos. Su paso apagaba los gritos y devolvía el sueño a las casas."},
+{id:19, name:"Euporia", greek:"Εὐπορία", revelation:"La suficiencia", icon:"🧺", category:"daimonas", chapter:"Capítulo 19", parentage:"Personificación", domain:"El tener bastante", symbol:"La cesta", photo:"images/17.jpg", quote:"Aparece en listas tardías de personificaciones, más en arte y retórica que en Hesíodo.", place:"Sin templo conocido.", meaning:"Euporia es contar con lo necesario, lo contrario de la carencia.", extra:"No tiene séquito fijo.", source:"Theoi: lista de personificaciones", relato:"Llenaba los cestos justo hasta el borde, ni de más ni de menos, para que nadie tuviera que pedir prestado el día siguiente. Donde ella se sentaba, la mesa alcanzaba para todos."},
+{id:20, name:"Ortosia", greek:"Ὀρθωσία", revelation:"El crecimiento", icon:"🌱", category:"daimonas", chapter:"Capítulo 20", parentage:"Epíteto de Ártemis", domain:"El crecer derecho", symbol:"El brote", photo:"images/18.jpg", quote:"Ortosia es sobre todo un epíteto cultual, no un relato de la Teogonía.", place:"En Esparta y otros lugares Ártemis Ortia / Ortosia cuidaba el paso de la infancia.", meaning:"Significa «la que endereza» o hace crecer bien a niños y plantas.", extra:"Va unida al culto de Ártemis, no a una casa propia.", source:"Pausanias sobre Ártemis Ortia", relato:"Enderezaba los brotes que crecían torcidos y acompañaba a los niños en el paso de una edad a otra. A su lado, lo frágil aprendía a sostenerse sin romperse."},
+{id:21, name:"Ferusa", greek:"Φέρουσα", revelation:"El sustento", icon:"🌾", category:"daimonas", chapter:"Capítulo 21", parentage:"Epíteto", domain:"La que trae alimento", symbol:"La espiga", photo:"images/19.jpg", quote:"Nombre cultual, «la que lleva», más que un personaje de Hesíodo.", place:"Asociada a diosas que traen cosecha, sobre todo Deméter en el campo griego.", meaning:"Es el acto de sostener y alimentar.", extra:"Acompañante de la tierra cultivada, sin mito largo.", source:"Tradición cultual; Theoi, epítetos agrícolas", relato:"Caminaba entre las eras con las manos llenas de grano aún tibio. Si una aldea temía el invierno, ella dejaba en el umbral lo justo para llegar a la próxima cosecha."},
+{id:22, name:"Aidos", greek:"Αἰδώς", revelation:"El respeto", icon:"🙇", category:"daimonas", chapter:"Capítulo 22", parentage:"Personificación", domain:"El pudor y el respeto", symbol:"El velo", photo:"images/20.jpg", quote:"Hesíodo dice que Aidós y Némesis dejarán la tierra en la edad de hierro. — Trabajos y días 197-200.", place:"Sin templo grande. Se la sentía en la mirada de los demás, en toda Grecia.", meaning:"Aidós es la vergüenza que frena el abuso: respeto a mayores, huéspedes y dioses.", extra:"Se va de la tierra junto a Némesis cuando los hombres ya no se contienen.", source:"Theoi: Aidos; Hesíodo, Trabajos y días 197-200", relato:"Bajaba la mirada de quien estaba a punto de burlarse de un huésped. Su silencio bastaba para que una mano levantada volviera a posarse sobre la mesa."},
+{id:23, name:"Némesis", greek:"Νέμεσις", revelation:"La indignación", icon:"👁️", category:"daimonas", chapter:"Capítulo 23", parentage:"Nix, en Hesíodo", domain:"El reparto justo y el castigo del exceso", symbol:"La vara", photo:"images/21.jpg", quote:"«También la Noche mortal dio a luz a Némesis, azote de los mortales.» — Teogonía 223.", place:"Templo famoso en Ramnunte (Ática). También culto en Esmirna.", meaning:"Némesis es la indignación ante quien se pasa de la raya. Devuelve la medida.", extra:"Hija de Nix en Hesíodo. No es una Erinía, aunque se les parece en la función.", source:"Theoi: Nemesis; Pausanias 1.33", relato:"Medía con calma el exceso de los orgullosos y devolvía el peso que habían querido esquivar. No gritaba: esperaba a que la balanza, sola, se inclinara."},
+{id:24, name:"Ápate", greek:"Ἀπάτη", revelation:"El engaño", icon:"🎭", category:"daimonas", chapter:"Capítulo 24", parentage:"Nix", domain:"El engaño", symbol:"La máscara", photo:"images/22.jpg", quote:"Hesíodo la nombra justo después de Némesis. — Teogonía 224.", place:"Sin templo. Es figura de poesía.", meaning:"Ápate es hacer pasar lo falso por verdadero.", extra:"Hija de la Noche. Sin fiesta.", source:"Theoi: Apate; Hesíodo, Teogonía 224", relato:"Cambiaba el brillo de una copa para que pareciera otra cosa. Los banquetes la recibían con risas, y solo al amanecer notaban que la historia contada no era la que había ocurrido."},
+{id:25, name:"Ate", greek:"Ἄτη", revelation:"La ofuscación", icon:"🌀", category:"daimonas", chapter:"Capítulo 25", parentage:"Éride, en Hesíodo", domain:"El error ciego", symbol:"El tropiezo", photo:"images/23.jpg", quote:"Hesíodo la pone entre los hijos de Éride. — Teogonía 230. En la Ilíada, Zeus la arroja del Olimpo.", place:"Sin templo propio.", meaning:"Ate es la ofuscación que hace actuar sin medir el daño. Después llega el arrepentimiento.", extra:"En Homero camina sobre las cabezas de los hombres. Las Litai van detrás, reparando.", source:"Theoi: Ate; Ilíada 19; Teogonía 230", relato:"Tropezaba a propósito en el umbral de las decisiones apresuradas. Quien la seguía creía ver un atajo y, al volver la cabeza, ya no reconocía el camino."},
+{id:26, name:"Hibris", greek:"Ὕβρις", revelation:"La desmesura", icon:"⛰️", category:"daimonas", chapter:"Capítulo 26", parentage:"Personificación", domain:"El exceso", symbol:"El pie que pisa de más", photo:"images/24.jpg", quote:"La hibris es palabra central de la tragedia, más que un culto.", place:"No tiene templo. Se la temía en toda la cultura griega.", meaning:"Hibris es olvidar el límite humano. Némesis y Dique responden a ella.", extra:"No vive en un lugar: aparece cuando alguien se cree por encima de la medida.", source:"Theoi: Hybris; tragedia ática", relato:"Subía un escalón más de lo debido y invitaba a otros a imitarla. Las murallas parecían bajas mientras ella reía, hasta que el eco de esa risa se quedaba solo."},
+{id:27, name:"Lete", greek:"Λήθη", revelation:"El olvido", icon:"🌫️", category:"daimonas", chapter:"Capítulo 27", parentage:"Éride, en Hesíodo", domain:"El olvido", symbol:"El río", photo:"images/25.jpg", quote:"Hesíodo la incluye entre los hijos de Éride. — Teogonía 227.", place:"En el oráculo de Trofonio (Lebadea) había una fuente Lete, pareja de la de Mnemósine. También es río del Hades en relatos posteriores.", meaning:"Lete borra lo que duele recordar. Junto a Mnemósine marca los dos lados de la memoria.", extra:"Hija de Éride en Hesíodo. El río está en el más allá, no en una ciudad.", source:"Theoi: Lethe; Pausanias 9.39", relato:"Pasaba la mano sobre los recuerdos que ya no podían cargarse. No los rompía: los dejaba en la orilla, como agua que se lleva un nombre y deja la piedra."},
+{id:28, name:"Nike", greek:"Νίκη", revelation:"La victoria", icon:"🏆", category:"daimonas", chapter:"Capítulo 28", parentage:"Estigia y Palante", domain:"La victoria", symbol:"La palma y las alas", photo:"images/26.jpg", quote:"Hesíodo dice que Nike y sus hermanos viven junto a Zeus. — Teogonía 383-403.", place:"Atenas le dedicó el templo pequeño de Atenea Nike en la Acrópolis. También aparece en Olimpia.", meaning:"Nike es el éxito en la contienda justa, no la pelea misma.", extra:"Séquito de Zeus. Hermana de Celo, Bía y Cratos.", source:"Theoi: Nike; Hesíodo, Teogonía 383-403", relato:"Llegaba cuando el polvo del camino aún no se había asentado. No peleaba: coronaba a quien había mantenido el puesto hasta el último paso."},
+{id:29, name:"Disnomía", greek:"Δυσνομία", revelation:"La anarquía", icon:"⛓️", category:"daimonas", chapter:"Capítulo 29", parentage:"Éride", domain:"El desorden legal", symbol:"La ley rota", photo:"images/27.jpg", quote:"Hesíodo la nombra entre los hijos de Éride, frente a Eunomía. — Teogonía 230.", place:"Sin templo: es el mal que la ciudad evita.", meaning:"Disnomía es vivir sin norma compartida.", extra:"Hija de Éride. Opuesta a Eunomía.", source:"Theoi: Dysnomia; Teogonía 230", relato:"Desordenaba las filas y mezclaba los decretos hasta que nadie sabía qué regla valía. Las plazas se llenaban de voces y ninguna encontraba el centro."},
+{id:30, name:"Hesiquia", greek:"Ἡσυχία", revelation:"La quietud", icon:"🤫", category:"daimonas", chapter:"Capítulo 30", parentage:"Personificación", domain:"La calma", symbol:"El silencio", photo:"images/28.jpg", quote:"Píndaro la elogia como bien de la ciudad. No está en la lista de Nix.", place:"Sin templo famoso. Ideal político de varias polis.", meaning:"Hesiquia es la paz interior y cívica, sin tumulto.", extra:"A veces se la acerca a Irene.", source:"Theoi: Hesykhia; Píndaro", relato:"Se sentaba en el patio cuando las discusiones ya no tenían a dónde ir. Con ella, el ruido bajaba y las casas volvían a oír el agua de la fuente."},
+{id:31, name:"Ioke", greek:"Ἰωκή", revelation:"La acometida", icon:"🏹", category:"daimonas", chapter:"Capítulo 31", parentage:"Personificación de la persecución", domain:"El ataque que no suelta", symbol:"La jabalina", photo:"images/29.jpg", quote:"Figura rara, de catálogos más que de culto.", place:"Sin santuario conocido.", meaning:"Ioke es perseguir y no dejar escapar al adversario.", extra:"Va con el lenguaje de la guerra, no con una fiesta.", source:"Theoi: listas de espíritus de combate", relato:"No soltaba la pista una vez que la había tomado. Seguía el rastro por colinas y vados, sin prisa y sin descanso, hasta cerrar la distancia."},
+{id:32, name:"Penia", greek:"Πενία", revelation:"La pobreza", icon:"🪙", category:"daimonas", chapter:"Capítulo 32", parentage:"Personificación", domain:"La escasez", symbol:"La mano vacía", photo:"images/30.jpg", quote:"En el Banquete de Platón, Penia se une a Poros y de ahí nace Eros.", place:"Sin templo. Aristófanes la pone en escena en Pluto.", meaning:"Penia es no tener lo necesario. Para algunos filósofos empuja al ingenio; para la ciudad, es una amenaza.", extra:"En el mito de Platón acude a un banquete de los dioses.", source:"Theoi: Penia; Platón, Banquete 203b", relato:"Se sentaba a la puerta con el cuenco vacío y enseñaba el valor de una hogaza. Algunos la evitaban; otros aprendían de ella a no desperdiciar el fuego."},
+{id:33, name:"Eupraxia", greek:"Εὐπραξία", revelation:"La buena conducta", icon:"✅", category:"daimonas", chapter:"Capítulo 33", parentage:"Personificación", domain:"El actuar bien", symbol:"El camino recto", photo:"images/31.jpg", quote:"Nombre de catálogo y de inscripciones, no de un canto de Hesíodo.", place:"Sin templo conocido.", meaning:"Eupraxia es que la acción salga bien y sea correcta.", extra:"No tiene séquito.", source:"Theoi: personificaciones", relato:"Acompañaba la tarea desde el primer nudo hasta el último. Si alguien empezaba un trabajo, ella cuidaba que terminara derecho y pudiera mostrarse."},
+{id:34, name:"Ececheiria", greek:"Ἐκεχειρία", revelation:"La tregua", icon:"🏳️", category:"daimonas", chapter:"Capítulo 34", parentage:"Personificación de la tregua sagrada", domain:"La pausa de las armas", symbol:"La rama", photo:"images/32.jpg", quote:"Se proclamaba antes de los juegos de Olimpia para que los peregrinos viajaran seguros.", place:"Olimpia y los otros juegos panhelénicos.", meaning:"Ececheiria es dejar las armas mientras dura la fiesta común.", extra:"Va unida a Zeus Olímpico, no a una casa propia.", source:"Pausanias sobre Olimpia; Theoi", relato:"Levantaba la rama en los caminos de los juegos y pedía que las armas esperaran. Mientras ella caminaba, los viajeros cruzaban tierras ajenas sin ser detenidos."},
+{id:35, name:"Ptoqueia", greek:"Πτωχεία", revelation:"La mendicidad", icon:"🥣", category:"daimonas", chapter:"Capítulo 35", parentage:"Personificación", domain:"El pedir", symbol:"El cuenco", photo:"images/33.jpg", quote:"Figura de comedia y de listas tardías, no de la Teogonía.", place:"Sin culto.", meaning:"Ptoqueia es vivir de lo que otros dan.", extra:"No tiene residencia mítica.", source:"Tradición literaria", relato:"Llamaba a las puertas con voz baja y aceptaba el pan que le tendían. Recordaba a las ciudades que una mesa cerrada también deja fuera parte de sí misma."},
+{id:36, name:"Calocagathia", greek:"Καλοκαγαθία", revelation:"La nobleza", icon:"🏛️", category:"daimonas", chapter:"Capítulo 36", parentage:"Ideal cívico", domain:"Lo bello y lo bueno", symbol:"La corona cívica", photo:"images/34.jpg", quote:"Es una idea de la educación ateniense, más que una diosa con mito.", place:"Atenas, en discursos y escuelas, no en un templo propio.", meaning:"Une buen carácter y buena presencia. La ciudad la proponía como modelo.", extra:"No forma séquito.", source:"Filosofía y oratoria ática", relato:"Unía el gesto cuidado con la palabra justa, sin separar una cosa de la otra. En las escuelas la ponían de ejemplo para quien quería ser útil y también digno de verse."},
+{id:37, name:"Disebia", greek:"Δυσσέβεια", revelation:"La impiedad", icon:"⚡", category:"daimonas", chapter:"Capítulo 37", parentage:"Personificación", domain:"El desprecio a los dioses", symbol:"El altar vacío", photo:"images/35.jpg", quote:"Lo contrario de eusebeia. Juicios de impiedad existieron en Atenas.", place:"Sin templo: es la falta que el culto evita.", meaning:"Disebia es negar a los dioses el respeto debido.", extra:"Opuesta a Eusebia.", source:"Theoi: personificaciones; derecho ático", relato:"Pasaba de largo ante el altar y dejaba la ofrenda sin encender. Donde ella se quedaba, las fiestas perdían el silencio de antes del canto."},
+{id:38, name:"Angelia", greek:"Ἀγγελία", revelation:"El mensaje", icon:"📨", category:"daimonas", chapter:"Capítulo 38", parentage:"Personificación del anuncio", domain:"La noticia", symbol:"El caduceo", photo:"images/36.jpg", quote:"Los griegos personificaban el mensaje; Iris y Hermes hacen el oficio.", place:"Sin templo propio. Hermes es el mensajero con culto.", meaning:"Angelia es la noticia que viaja entre dioses o ciudades.", extra:"Cercana al séquito de Hermes e Iris.", source:"Theoi: Iris, Hermes", relato:"Corría de una colina a otra con la noticia todavía fresca. No decidía si era buena o mala: solo llegaba antes de que el rumor la deformara."},
+{id:39, name:"Cacia", greek:"Κακία", revelation:"El vicio", icon:"🪨", category:"daimonas", chapter:"Capítulo 39", parentage:"Personificación", domain:"El mal hábito", symbol:"La senda fácil", photo:"images/37.jpg", quote:"Pródico, contado por Jenofonte, pone a Kakía frente a Areté ante Heracles.", place:"Sin templo.", meaning:"Kakía ofrece el camino cómodo. Areté ofrece el camino trabajoso.", extra:"En ese relato dialoga con Heracles.", source:"Jenofonte, Memorables 2.1; Theoi: Kakia", relato:"Ofrecía el sendero llano y la sombra inmediata. Quien la elegía descansaba pronto y, al anochecer, descubría que no había avanzado."},
+{id:40, name:"Diceosina", greek:"Δικαιοσύνη", revelation:"La rectitud", icon:"📏", category:"daimonas", chapter:"Capítulo 40", parentage:"Personificación de la justicia como virtud", domain:"La rectitud", symbol:"La regla", photo:"images/38.jpg", quote:"Nombre filosófico de la justicia, cercano a Dique.", place:"Se discutía en Atenas, en la filosofía, más que en un santuario.", meaning:"Es hacer lo que corresponde, de forma constante.", extra:"Se distingue de Dique, que es la diosa que acusa.", source:"Platón, República; Theoi", relato:"Repetía el mismo peso en cada trato, día tras día, sin favores ni excepciones. Su constancia hacía que la plaza confiara en el mostrador y en la palabra."},
+{id:41, name:"Aporia", greek:"Ἀπορία", revelation:"La carencia", icon:"❓", category:"daimonas", chapter:"Capítulo 41", parentage:"Personificación", domain:"No encontrar salida", symbol:"El cruce vacío", photo:"images/39.jpg", quote:"Palabra de la filosofía: Sócrates deja al interlocutor en aporía.", place:"Sin culto.", meaning:"Aporia es no saber por dónde seguir, falta de recursos o de respuesta.", extra:"No tiene casa.", source:"Platón, diálogos", relato:"Se detenía en la encrucijada y no señalaba ninguna senda. Los caminantes daban vueltas a su alrededor hasta encontrar, solos, una razón para elegir."},
+{id:42, name:"Demokratia", greek:"Δημοκρατία", revelation:"La democracia", icon:"🗳️", category:"daimonas", chapter:"Capítulo 42", parentage:"Personificación del régimen", domain:"El poder del pueblo", symbol:"El decreto", photo:"images/40.jpg", quote:"En Atenas se representó a Demokratia en relieves y pinturas del siglo IV a. C.", place:"Ágora de Atenas. No es un mito de Hesíodo.", meaning:"Es la idea de que las decisiones salen de los ciudadanos.", extra:"Figura cívica ateniense.", source:"Relieves áticos; Theoi", relato:"Reunía las voces en el mismo círculo y pedía que ninguna tapara a las demás. El decreto salía cuando la plaza, y no un solo trono, había hablado."},
+{id:43, name:"Arete", greek:"Ἀρετή", revelation:"La virtud", icon:"🌟", category:"daimonas", chapter:"Capítulo 43", parentage:"Personificación", domain:"La excelencia", symbol:"La cuesta", photo:"images/41.jpg", quote:"En el relato de Pródico, Areté ofrece a Heracles una vida de esfuerzo.", place:"Sin templo grande. Ideal de toda Grecia.", meaning:"Arete es hacer algo con excelencia: valor, oficio o carácter.", extra:"Se opone a Kakía en el cruce de caminos de Heracles.", source:"Jenofonte, Memorables 2.1; Theoi: Arete", relato:"Mostraba la cuesta más larga y esperaba en la cima. No prometía facilidad: prometía que el esfuerzo dejaría una obra que pudiera mirarse de frente."},
+{id:44, name:"Enío", greek:"Ἐνυώ", revelation:"La destrucción", icon:"🗡️", category:"daimonas", chapter:"Capítulo 44", parentage:"Diosa de la guerra", domain:"El saqueo", symbol:"La antorcha", photo:"images/42.jpg", quote:"Homero la pone junto a Ares en el combate. — Ilíada 5.333.", place:"Tenía culto asociado a Ares en varias ciudades, entre ellas Atenas.", meaning:"Enío es el estrago de la batalla, no la estrategia.", extra:"Séquito o compañera de Ares. A veces se confunde con una de las Grayas, otro personaje.", source:"Theoi: Enyo; Ilíada 5", relato:"Entraba en el campamento cuando el orden ya se había roto. A su paso, las tiendas quedaban abiertas y el polvo no dejaba ver quién había ganado."},
+{id:45, name:"Bia", greek:"Βία", revelation:"La fuerza", icon:"💪", category:"daimonas", chapter:"Capítulo 45", parentage:"Estigia y Palante", domain:"La fuerza que obliga", symbol:"La cadena", photo:"images/43.jpg", quote:"Hesíodo: Bía vive junto a Zeus con Nike, Cratos y Zelo. — Teogonía 385.", place:"En Corinto, santuario compartido con Ananque, según tradición local.", meaning:"Bía es la fuerza que no discute. En Prometeo encadenado ayuda a sujetar al titán.", extra:"Séquito de Zeus. Hermana de Nike.", source:"Theoi: Bia; Teogonía 383-385", relato:"Cerraba la puerta con el hombro cuando las palabras ya no alcanzaban. No negociaba: sostenía el cerrojo hasta que el otro cedía."},
+
+{id:46, name:"Alala", greek:"Ἀλαλά", revelation:"El grito de batalla", icon:"📣", category:"daimonas", chapter:"Capítulo 46", parentage:"Personificación", domain:"El grito que abre el combate", symbol:"La voz", photo:"images/44.jpg", quote:"Los hoplitas gritaban «alalá» al cargar. Píndaro la trata como figura.", place:"Campo de batalla, no un templo.", meaning:"Alala reúne al grupo y asusta al contrario.", extra:"Se la acerca a Ares y a Atenea en la poesía.", source:"Theoi: Alala; Píndaro", relato:"Soltaba el grito que alineaba a los que iban a avanzar. Ese sonido, breve y alto, hacía que el grupo dejara de dudar al mismo tiempo."},
+{id:47, name:"Amecania", greek:"Ἀμηχανία", revelation:"La impotencia", icon:"🫥", category:"daimonas", chapter:"Capítulo 47", parentage:"Personificación", domain:"No poder actuar", symbol:"Las manos quietas", photo:"images/45.jpg", quote:"Figura de poesía y tragedia.", place:"Sin culto.", meaning:"Amekhania es quedarse sin medio ante el problema.", extra:"No tiene residencia.", source:"Theoi: listas", relato:"Dejaba las manos quietas sobre las rodillas, sin herramienta y sin plan. A su lado, hasta el río parecía no tener vado."},
+{id:48, name:"Aletheia", greek:"Ἀλήθεια", revelation:"El desocultamiento", icon:"🔍", category:"daimonas", chapter:"Capítulo 48", parentage:"Personificación de la verdad", domain:"Lo que no permanece oculto", symbol:"La luz", photo:"images/46.jpg", quote:"Parménides y Píndaro la tratan como fuerza, no como un culto popular.", place:"Sin templo panhelénico.", meaning:"Aletheia es quitar el velo: decir lo que es.", extra:"A veces se la opone a Apate y a Lete.", source:"Theoi: Aletheia", relato:"Corría el velo solo lo necesario para que la escena se viera entera. No adornaba el relato: lo dejaba en la luz en que había ocurrido."},
+{id:49, name:"Peito", greek:"Πειθώ", revelation:"La persuasión", icon:"💬", category:"daimonas", chapter:"Capítulo 49", parentage:"Oceánide en algunas listas", domain:"La palabra que convence", symbol:"La cinta", photo:"images/47.jpg", quote:"Hesíodo la nombra entre las Oceánides y también adornando a Pandora. — Teogonía 349; Trabajos y días 73.", place:"Altar en Atenas, cerca del de Afrodita Pandemos.", meaning:"Peito es convencer sin imponerse por la fuerza.", extra:"Séquito de Afrodita. También cercana a las Cárites.", source:"Theoi: Peitho; Pausanias 1.22", relato:"Hablaba sin alzar la voz y aun así cambiaba el voto de la asamblea. Su argumento no empujaba: se sentaba al lado y esperaba a ser elegido."},
+{id:50, name:"Alke", greek:"Ἀλκή", revelation:"El coraje", icon:"🛡️", category:"daimonas", chapter:"Capítulo 50", parentage:"Personificación", domain:"La defensa valiente", symbol:"El escudo", photo:"images/48.jpg", quote:"Palabra homérica del valor en el momento del golpe.", place:"Sin templo propio. Atenea Alkis es un epíteto.", meaning:"Alke es no soltar el puesto.", extra:"Cercana a Atenea y a Ares como cualidad, no como hija con mito.", source:"Theoi: epítetos de Atenea", relato:"Se plantaba en el hueco de la fila cuando otros retrocedían. No buscaba gloria: solo impedía que ese punto quedara vacío."},
+{id:51, name:"Esquine", greek:"Αἰσχύνη", revelation:"La vergüenza", icon:"😳", category:"daimonas", chapter:"Capítulo 51", parentage:"Personificación", domain:"La vergüenza por la falta", symbol:"La mirada baja", photo:"images/49.jpg", quote:"Cercana a Aidós. Más moral que mítica.", place:"Sin santuario.", meaning:"Esquine es el sonrojo después de una falta, o el miedo a cometerla.", extra:"No tiene fiesta.", source:"Theoi: personificaciones morales", relato:"Teñía las mejillas de quien acababa de faltar a su palabra. Ese calor bastaba, a veces, para devolver lo tomado antes de que alguien lo pidiera."},
+{id:52, name:"Psique", greek:"Ψυχή", revelation:"El alma", icon:"🦋", category:"daimonas", chapter:"Capítulo 52", parentage:"Personificación del alma", domain:"El alma", symbol:"La mariposa", photo:"images/50.jpg", quote:"En los relatos griegos, Psique es el alma que atraviesa pruebas antes de quedar unida a Eros. Aparece sobre todo en Apuleyo, El asno de oro.", place:"Se la representaba en el arte de toda Grecia, a menudo con alas de mariposa. No es una figura de la Teogonía.", meaning:"Psique es el soplo y el alma de una persona, lo que permanece más allá del cuerpo.", extra:"En el cuento de Apuleyo supera pruebas y queda junto a Eros. No forma el séquito de un Olímpico en Hesíodo.", source:"Apuleyo, El asno de oro; tradición del arte griego", relato:"Cruzaba pruebas en silencio, con las alas aún húmedas, hasta reconocer la luz que la esperaba. Quienes la veían pasar decían que el alma no se pierde: solo cambia de umbral."},
+{id:53, name:"Aergia", greek:"Ἀεργία", revelation:"La pereza", icon:"😴", category:"daimonas", chapter:"Capítulo 53", parentage:"Personificación", domain:"El no hacer", symbol:"El umbral", photo:"images/51.jpg", quote:"Figura de fábulas y listas.", place:"Sin culto.", meaning:"Aergia es dejar el trabajo para otro día. Hesíodo, sin nombrarla diosa, condena la ociosidad en Trabajos y días.", extra:"No tiene casa.", source:"Theoi: Aergia", relato:"Dejaba la azada apoyada y proponía empezar mañana. Los surcos se secaban mientras ella contaba las horas a la sombra."},
+{id:54, name:"Soteria", greek:"Σωτηρία", revelation:"La seguridad", icon:"🛟", category:"daimonas", chapter:"Capítulo 54", parentage:"Personificación del rescate", domain:"El salir a salvo", symbol:"La corona", photo:"images/52.jpg", quote:"Las ciudades daban gracias por la soteria después de un peligro.", place:"Fiestas Soteria en Delfos, en honor de Zeus Salvador y Apolo, tras la defensa frente a los galos (279 a. C.).", meaning:"Soteria es llegar entero a casa: salvación de la ciudad o de una persona.", extra:"Va con Zeus Soter y con dioses salvadores, no sola.", source:"Inscripciones délficas; Theoi", relato:"Esperaba en el muelle cuando la barca volvía tarde. Su presencia no evitaba la tormenta: marcaba el punto al que aún se podía llegar."},
+{id:55, name:"Eusebia", greek:"Εὐσέβεια", revelation:"La devoción", icon:"🙏", category:"daimonas", chapter:"Capítulo 55", parentage:"Personificación", domain:"El respeto a los dioses", symbol:"El incienso", photo:"images/53.jpg", quote:"Lo contrario de la impiedad en los tribunales atenienses.", place:"Toda Grecia, en el gesto del sacrificio, no en un solo templo.", meaning:"Eusebeia es tratar a dioses, padres y huéspedes como corresponde.", extra:"No tiene mito de nacimiento en Hesíodo.", source:"Theoi: Eusebeia", relato:"Encendía la ofrenda en el orden debido y no se saltaba el silencio. Con ella, el rito conservaba el respeto a dioses, padres y huéspedes."},
+{id:56, name:"Adicia", greek:"Ἀδικία", revelation:"La injusticia", icon:"👎", category:"daimonas", chapter:"Capítulo 56", parentage:"Personificación", domain:"El daño contra la norma", symbol:"La balanza torcida", photo:"images/54.jpg", quote:"Se opone a Dique en vasos y textos.", place:"Sin templo.", meaning:"Adikia es quedarse con lo que no corresponde.", extra:"En pintura de vasos puede aparecer vencida por Dique.", source:"Theoi: Adikia", relato:"Inclinaba el peso hacia quien ya tenía de más. Los mostradores parecían iguales, pero la medida de su lado siempre sobraba un poco."},
+{id:57, name:"Hygeia", greek:"Ὑγίεια", revelation:"La salud", icon:"🥣", category:"daimonas", chapter:"Capítulo 57", parentage:"Hija de Asclepio", domain:"La salud", symbol:"La serpiente y la copa", photo:"images/55.jpg", quote:"Los himnos la saludan junto a Asclepio.", place:"Santuario de Asclepio en Epidauro, Atenas y Cos, donde Hygeia tiene estatua.", meaning:"Hygeia es conservar el cuerpo sano, no solo curar cuando ya hay mal.", extra:"Séquito e hija de Asclepio. Hermana de Yaso, Panacea y otros.", source:"Theoi: Hygeia; Pausanias 1.23", relato:"Recorría los pórticos antes de que la fiebre entrara en la casa. Dejaba agua limpia, sombra y la costumbre de no descuidar el cuerpo."},
+{id:58, name:"Anaideia", greek:"Ἀναίδεια", revelation:"La desvergüenza", icon:"😒", category:"daimonas", chapter:"Capítulo 58", parentage:"Personificación", domain:"La falta de respeto", symbol:"La cara descubierta", photo:"images/56.jpg", quote:"Lo contrario de Aidós.", place:"Sin culto.", meaning:"Anaideia es no sonrojarse ante una falta.", extra:"Se nombra cuando Aidós ha partido.", source:"Theoi: listas", relato:"Se sentaba en la cabecera sin que nadie la invitara. Las bromas que otros habrían detenido, ella las prolongaba hasta volverlas peso."},
+{id:59, name:"Adefagia", greek:"Ἀδηφαγία", revelation:"La gula", icon:"🍖", category:"daimonas", chapter:"Capítulo 59", parentage:"Personificación", domain:"El comer sin medida", symbol:"El plato", photo:"images/57.jpg", quote:"Hubo una tradición local rara en Sicilia sobre un culto a Adephagia.", place:"Sicilia, según notas antiguas; no es un culto panhelénico.", meaning:"Es no saber dejar la mesa.", extra:"No forma séquito olímpico.", source:"Theoi: Adephagia", relato:"No apartaba el plato aunque la mesa ya hubiera pasado de largo. A su alrededor, la fiesta se volvía solo hambre que no sabía cerrarse."},
+{id:60, name:"Eleos", greek:"Ἔλεος", revelation:"La piedad", icon:"🤲", category:"daimonas", chapter:"Capítulo 60", parentage:"Personificación de la compasión", domain:"El apiadarse", symbol:"El altar", photo:"images/58.jpg", quote:"Pausanias describe un altar de Eleos en el ágora de Atenas, refugio de suplicantes. — 1.17.1.", place:"Ágora de Atenas.", meaning:"Eleos es moverse ante el sufrimiento ajeno y no entregar al suplicante.", extra:"Altar cívico, no un palacio en el Olimpo.", source:"Theoi: Eleos; Pausanias 1.17.1", relato:"Abría un sitio en el altar para quien llegaba sin nada que ofrecer. Su gesto detenía la mano que ya iba a cerrar la puerta."},
+{id:61, name:"Manía", greek:"Μανία", revelation:"La locura", icon:"🌙", category:"daimonas", chapter:"Capítulo 61", parentage:"Personificación", domain:"El ánimo fuera de sí", symbol:"La antorcha", photo:"images/59.jpg", quote:"Puede ser enviada por los dioses, como en el caso de las Prétides o de Heracles en otros relatos.", place:"A veces unida a cultos de Dioniso; no tiene un gran templo solo suyo.", meaning:"Manía es perder la medida de la mente.", extra:"Cercana al cortejo de Dioniso cuando el rito se desborda.", source:"Theoi: Mania", relato:"Giraba el compás de la mente hasta que el norte dejaba de verse. Los coros la conocían cuando el canto pasaba de la medida al vértigo."},
+{id:62, name:"Hedone", greek:"Ἡδονή", revelation:"El placer", icon:"🍯", category:"daimonas", chapter:"Capítulo 62", parentage:"Personificación", domain:"Lo agradable", symbol:"La copa de miel", photo:"images/60.jpg", quote:"Los filósofos discutían si había que seguirla o medirla.", place:"Sin templo.", meaning:"Hedone es el gusto de lo agradable: comida, descanso, música. Los griegos pedían no volverla dueña de la vida.", extra:"No tiene residencia.", source:"Theoi: Hedone; filosofía", relato:"Dejaba en la mesa la miel, el descanso y la música baja. Los sabios pedían que visitara la casa, pero que no se quedara a gobernarla."},
+{id:63, name:"Homonia", greek:"Ὁμόνοια", revelation:"La concordia", icon:"🤲", category:"daimonas", chapter:"Capítulo 63", parentage:"Personificación cívica", domain:"Pensar juntos", symbol:"Las manos unidas", photo:"images/61.jpg", quote:"Las ciudades acuñaban monedas con Homonoia cuando hacían las paces.", place:"Altares en varias polis helenísticas, entre ellas Platea y ciudades de Asia Menor.", meaning:"Homonoia es que la ciudad no se parta en bandos.", extra:"Cercana a Irene y a las Cárites.", source:"Theoi: Homonoia", relato:"Juntaba las manos de dos bandos que ya no recordaban el motivo de la riña. Mientras ella permanecía, la ciudad podía acuñar de nuevo una sola palabra."},
+{id:64, name:"Lyssa", greek:"Λύσσα", revelation:"La furia", icon:"🐺", category:"daimonas", chapter:"Capítulo 64", parentage:"Personificación", domain:"La furia de la caza o la batalla", symbol:"El aguijón", photo:"images/62.jpg", quote:"En la tragedia Heracles, Lyssa es enviada a enloquecer al héroe.", place:"Sin templo propio. Figura de teatro.", meaning:"Lyssa es la rabia que ya no obedece.", extra:"En Eurípides obedece a Hera contra su propio deseo.", source:"Theoi: Lyssa; Eurípides, Heracles", relato:"Soltaba el freno cuando la cólera ya no oía nombres. Hasta quienes la enviaban preferían no mirarla de frente."},
+{id:65, name:"Sofrosina", greek:"Σωφροσύνη", revelation:"La moderación", icon:"🧘", category:"daimonas", chapter:"Capítulo 65", parentage:"Personificación", domain:"La mente sana y medida", symbol:"La rienda", photo:"images/63.jpg", quote:"Teognis dice que Sofrosina también abandonó a los hombres. — 1135.", place:"Ideal de Esparta y de Atenas; no un gran templo.", meaning:"Sofrosina es no dejarse llevar por la ira, el lujo o el miedo.", extra:"Se la nombra junto a Pistis y las Cárites.", source:"Theoi: Sophrosyne", relato:"Tiraba de la rienda antes de la última copa y de la última frase. Con ella, la fiesta terminaba a tiempo y la plaza amanecía en orden."},
+{id:66, name:"Leucotea", greek:"Λευκοθέα", revelation:"El auxilio", icon:"🌊", category:"daimonas", chapter:"Capítulo 66", parentage:"Ino, ya diosa", domain:"El auxilio en el mar", symbol:"El velo blanco", photo:"images/64.jpg", quote:"En la Odisea entrega a Odiseo un velo que lo salva del naufragio. — Odisea 5.333.", place:"Culto en costas: Corinto, Laconia y otras orillas. Fiestas relacionadas con Ino-Leucotea.", meaning:"Es la ayuda que llega en la tormenta. Antes fue Ino, hija de Cadmo.", extra:"Vive en el mar con su hijo Palemón. No es una daimon abstracta, pero la lista la pide como auxilio.", source:"Theoi: Leucothea; Odisea 5", relato:"Tendía un velo claro a quien ya no alcanzaba la orilla. El mar seguía alto, pero ese paño marcaba un rumbo hasta la playa."},
+{id:67, name:"Telete", greek:"Τελετή", revelation:"La iniciación", icon:"🎭", category:"daimonas", chapter:"Capítulo 67", parentage:"Dioniso y Nicea, en relatos tardíos", domain:"El rito completo", symbol:"La máscara", photo:"images/65.jpg", quote:"Los himnos órficos la nombran.", place:"Va con los misterios de Dioniso, en varias regiones, no en un solo templo.", meaning:"Telete es llevar un rito hasta el final.", extra:"Séquito de Dioniso.", source:"Theoi: Telete", relato:"No dejaba el rito a la mitad. Esperaba el último canto, la última vuelta y la salida en silencio, para que la fiesta quedara completa."},
+{id:68, name:"Eutenia", greek:"Εὐθενία", revelation:"La abundancia", icon:"🌽", category:"daimonas", chapter:"Capítulo 68", parentage:"Personificación", domain:"La prosperidad del campo", symbol:"La cornucopia", photo:"images/66.jpg", quote:"Aparece en monedas de Alejandría y en arte helenístico junto a Nilus.", place:"Egipto griego y ciudades agrícolas; menos en la Grecia arcaica.", meaning:"Eutenia es que haya de sobra: grano, bienes, año bueno. El nombre cubre abundancia y prosperidad.", extra:"Cercana a Deméter y a Tique.", source:"Theoi: Euthenia", relato:"Hacía rebosar los graneros sin vaciar el campo. Los años en que ella se detenía, la ciudad guardaba de más y prestaba sin miedo."},
+{id:69, name:"Harmonia", greek:"Ἁρμονία", revelation:"La armonía", icon:"🎶", category:"daimonas", chapter:"Capítulo 69", parentage:"Ares y Afrodita", domain:"El acuerdo", symbol:"El collar", photo:"images/67.jpg", quote:"Hesíodo: Harmonía nace de Ares y Afrodita y se casa con Cadmo. — Teogonía 933-937.", place:"Tebas, como reina junto a Cadmo. También idea musical y cívica.", meaning:"Harmonia es que las partes encajen: en la música, en la familia, en la ciudad.", extra:"Hija de Ares y Afrodita. Recibe un collar en su boda.", source:"Theoi: Harmonia; Teogonía 933-937", relato:"Ajustaba las voces hasta que ninguna tapaba a la otra. En la boda, en el coro y en la plaza, buscaba el punto en que las partes encajan."},
+{id:70, name:"Mete", greek:"Μέθη", revelation:"La embriaguez", icon:"🍇", category:"daimonas", chapter:"Capítulo 70", parentage:"Personificación", domain:"El vino de más", symbol:"La copa", photo:"images/68.jpg", quote:"Compañera de festival, no un culto separado.", place:"Fiestas de Dioniso en toda Grecia, donde el vino tenía regla.", meaning:"Mete es pasarse con el vino. Los griegos la trataban como riesgo del banquete, no como modelo.", extra:"Séquito de Dioniso.", source:"Theoi: Methe", relato:"Seguía a la copa cuando ya había pasado la segunda ronda. Las fiestas la conocían como invitada riesgosa: alegre al principio, pesada al final."},
+{id:71, name:"Euclea", greek:"Εὔκλεια", revelation:"La reputación", icon:"🏅", category:"daimonas", chapter:"Capítulo 71", parentage:"Personificación de la buena fama", domain:"El buen nombre", symbol:"La corona", photo:"images/69.jpg", quote:"Plutarco y Pausanias mencionan culto de Ártemis Euclea.", place:"Tebas, Corinto y otras ciudades, a menudo unida a Ártemis.", meaning:"Euclea es que hablen bien de alguien por un acto justo.", extra:"Cercana a Ártemis Euclea.", source:"Theoi: Eukleia; Pausanias 9.17", relato:"Guardaba el buen nombre de quien había actuado con justicia, aunque nadie lo hubiera visto. A su paso, el relato de ese acto viajaba limpio."},
+{id:72, name:"Astrea", greek:"Ἀστραία", revelation:"La inocencia", icon:"⭐", category:"daimonas", chapter:"Capítulo 72", parentage:"En relatos tardíos, hija de Zeus y Temis", domain:"La justicia que se retira", symbol:"Las estrellas", photo:"images/70.jpg", quote:"Arato y Ovidio dicen que dejó la tierra en la edad de bronce y subió al cielo como Virgo.", place:"Sin templo arcaico. Figura de la poesía helenística y romana.", meaning:"Astrea es la justicia que solo permanece entre gente inocente.", extra:"Se la identifica a veces con Dique.", source:"Theoi: Astraea", relato:"Se quedaba solo donde todavía se podía hablar sin doblez. Cuando la plaza se llenaba de excusas, ella levantaba la vista y se alejaba hacia el cielo."},
+{id:73, name:"Poena", greek:"Ποινή", revelation:"La penalización", icon:"⛓️", category:"daimonas", chapter:"Capítulo 73", parentage:"Personificación del castigo", domain:"La pena que corresponde", symbol:"La vara", photo:"images/71.jpg", quote:"Las Poinai son espíritus del castigo en la poesía.", place:"Sin templo propio.", meaning:"Poine es la consecuencia de una falta, no la venganza sin límite.", extra:"Cercanas a las Erinias, pero no son el mismo grupo.", source:"Theoi: Poine", relato:"Llegaba después de la falta, sin prisa y sin adorno. No inventaba un castigo nuevo: dejaba la consecuencia que ya estaba escrita en el acto."},
+{id:74, name:"Eufeme", greek:"Εὐφήμη", revelation:"La aclamación", icon:"👏", category:"daimonas", chapter:"Capítulo 74", parentage:"Personificación", domain:"La palabra de buen agüero", symbol:"El silencio ritual antes del canto", photo:"images/72.jpg", quote:"Antes de un sacrificio se pedía eufemia: no decir palabras de mal agüero.", place:"En cualquier altar griego, como regla del rito.", meaning:"Eufeme es el elogio y también el silencio respetuoso que permite oír el rito.", extra:"Va con el culto en general, no con un dios solo.", source:"Theoi: Eupheme", relato:"Pedía silencio antes del himno para que ninguna palabra torcida se colara. Luego recogía el aplauso y lo devolvía como elogio medido."},
+{id:75, name:"Filofrósine", greek:"Φιλοφροσύνη", revelation:"La hospitalidad", icon:"🍞", category:"daimonas", chapter:"Capítulo 75", parentage:"Personificación", domain:"El trato amable al huésped", symbol:"El pan y la sal", photo:"images/73.jpg", quote:"La xenia, hospitalidad, era ley de Zeus.", place:"Toda Grecia: la casa del anfitrión, bajo Zeus Xenios.", meaning:"Filofrosyne es recibir de buena gana.", extra:"Bajo la mirada de Zeus hospitalario.", source:"Theoi: personificaciones; Odisea", relato:"Ponía pan y asiento antes de preguntar el nombre. En su casa, el viajero comía primero y contaba su camino después."},
+{id:76, name:"Feme", greek:"Φήμη", revelation:"El rumor", icon:"👂", category:"daimonas", chapter:"Capítulo 76", parentage:"Personificación", domain:"Lo que se dice y corre", symbol:"La voz", photo:"images/74.jpg", quote:"Hesíodo aconseja no inventar rumores. Feme tiene altar en Atenas según Pausanias. — 1.17.1.", place:"Ágora de Atenas. Los romanos la llamaron Fama.", meaning:"Feme es la noticia que viaja sola, verdadera o hinchada. También se escribe Osa.", extra:"Altar cívico, no un palacio.", source:"Theoi: Pheme; Pausanias 1.17.1", relato:"Salía de una puerta y llegaba a la otra ya cambiada. Unos la oían como noticia; otros, como un relato que había crecido por el camino."},
+{id:77, name:"Paregoros", greek:"Παρήγορος", revelation:"El consuelo", icon:"💐", category:"daimonas", chapter:"Capítulo 77", parentage:"Personificación", domain:"La palabra que calma", symbol:"La mano en el hombro", photo:"images/75.jpg", quote:"Figura de poesía.", place:"Sin templo.", meaning:"Paregoros es acompañar el duelo sin borrarlo.", extra:"No tiene séquito fijo.", source:"Theoi: listas", relato:"Se sentaba al lado de quien guardaba un duelo y no intentaba apurarlo. Su voz no borraba la pérdida: la acompañaba hasta que pudiera decirse."},
+{id:78, name:"Peitharchia", greek:"Πειθαρχία", revelation:"La obediencia", icon:"📏", category:"daimonas", chapter:"Capítulo 78", parentage:"Personificación cívica", domain:"Obedecer la norma acordada", symbol:"El orden de fila", photo:"images/76.jpg", quote:"Ideal de la falange y de la polis.", place:"Esparta y Atenas, como valor, no como diosa con fiesta.", meaning:"Peitharchia es acatar la regla común.", extra:"Cercana a Nomos y Eunomía.", source:"Tradición cívica", relato:"Alineaba los pasos con la regla que la ciudad había acordado. No pedía aplauso: pedía que la fila no se rompiera en el primer empujón."},
+{id:79, name:"Frice", greek:"Φρίκη", revelation:"El horror", icon:"😱", category:"daimonas", chapter:"Capítulo 79", parentage:"Personificación", domain:"El escalofrío", symbol:"El vello erizado", photo:"images/77.jpg", quote:"Palabra de la tragedia cuando aparece algo que no debería verse.", place:"Sin culto.", meaning:"Frike es el miedo físico ante lo sagrado o lo terrible.", extra:"No tiene casa.", source:"Theoi: listas", relato:"Erizaba la piel cuando algo sagrado o terrible cruzaba el umbral. No explicaba la escena: solo hacía que nadie pudiera mirarla con indiferencia."},
+{id:80, name:"Prófasis", greek:"Πρόφασις", revelation:"La excusa", icon:"🗨️", category:"daimonas", chapter:"Capítulo 80", parentage:"Personificación", domain:"El pretexto", symbol:"La palabra a medias", photo:"images/78.jpg", quote:"Figura retórica más que mítica.", place:"Sin templo.", meaning:"Profasis es la razón que se da para no hacer lo debido, o la causa que se alega.", extra:"No tiene mito de nacimiento.", source:"Retórica griega", relato:"Llegaba con una razón pulida para no hacer lo que ya estaba prometido. Su frase sonaba completa, y aun así dejaba la tarea sin empezar."},
+{id:81, name:"Clío", greek:"Κλειώ", revelation:"La historia", icon:"📜", category:"muses", chapter:"Capítulo 81", parentage:"Zeus y Mnemósine", domain:"La historia", symbol:"El rollo", photo:"images/79.jpg", quote:"Hesíodo nombra a Clío la primera de las nueve Musas. — Teogonía 77.", place:"Las Musas tenían culto en el Helicón (Beocia), en Pieria y en Delfos, junto a Apolo.", meaning:"Clío es la que celebra: guarda los hechos para que no se pierdan.", extra:"Hija de Mnemósine. Vive con sus hermanas en el Helicón y visita el Olimpo. Séquito de Apolo cuando hay canto.", source:"Theoi: Clio; Hesíodo, Teogonía 75-79", relato:"Abría el rollo y no dejaba que un hecho se perdiera entre los años. A su lado, las guerras y las fundaciones volvían a tener fecha y nombre."},
+{id:82, name:"Erato", greek:"Ἐρατώ", revelation:"El canto que desea", icon:"💘", category:"muses", chapter:"Capítulo 82", parentage:"Zeus y Mnemósine", domain:"La poesía lírica", symbol:"La lira", photo:"images/80.jpg", quote:"Hesíodo la incluye entre las nueve. — Teogonía 78.", place:"Mismo culto que las demás Musas: Helicón, Pieria, Delfos.", meaning:"Erato es el canto que acerca a las personas. En esta enciclopedia se presenta como Musa del poema, no como un culto aparte.", extra:"Hermana de las Musas. Reside en el Helicón.", source:"Theoi: Erato; Hesíodo, Teogonía 78", relato:"Afinaba la lira para el canto que acerca a las personas. Sus versos no ordenaban: invitaban a quedarse un poco más en la misma estrofa."},
+{id:83, name:"Calíope", greek:"Καλλιόπη", revelation:"La elocuencia", icon:"🎤", category:"muses", chapter:"Capítulo 83", parentage:"Zeus y Mnemósine", domain:"La elocuencia y el canto heroico", symbol:"La tablilla", photo:"images/81.jpg", quote:"Hesíodo dice que Calíope es la más excelente, porque acompaña a los reyes. — Teogonía 79-80.", place:"Helicón y santuarios de las Musas en Beocia.", meaning:"Calíope es la voz bien dicha: el relato grande y la palabra pública.", extra:"La mayor de las Musas en Hesíodo. Madre de Orfeo en tradiciones posteriores.", source:"Theoi: Calliope; Teogonía 79-93", relato:"Daba la palabra larga, la que sostiene un relato de principio a fin. Reyes y cantores pedían su voz cuando el discurso debía oírse en toda la sala."},
+{id:84, name:"Polimnia", greek:"Πολυμνία", revelation:"La meditación", icon:"🤫", category:"muses", chapter:"Capítulo 84", parentage:"Zeus y Mnemósine", domain:"El himno y la meditación", symbol:"El velo", photo:"images/82.jpg", quote:"Hesíodo la nombra entre las nueve. — Teogonía 78.", place:"Culto compartido de las Musas en el Helicón.", meaning:"Polimnia es el canto grave, el himno que pide silencio antes de empezar.", extra:"Vive con las Musas. No tiene ciudad propia.", source:"Theoi: Polyhymnia; Teogonía 78", relato:"Pedía silencio antes del himno y mantenía el velo sobre la frente. Su canto era grave, hecho más para meditar que para la plaza ruidosa."}
+];
+const gallery = document.getElementById('gallery');
+let visible = daimones.slice();
+let openIndex = -1;
+let favs = [];
+try { favs = JSON.parse(localStorage.getItem('daimones-fav') || '[]'); } catch(e){ favs = []; }
+function isFav(id){ return favs.includes(id); }
+function cardHtml(d){ return `<article class="card" tabindex="0" data-id="${d.id}"><button class="fav-btn" type="button" data-fav="${d.id}" aria-label="Favorito">${isFav(d.id)?'★':'☆'}</button><div class="card-icon">${d.icon}</div><h2>${d.name}</h2><p class="revelation">${d.revelation}</p><span class="chapter">${d.chapter}</span></article>`; }
+function bindCards(root){
+  root.querySelectorAll('.card').forEach(card => {
+    const open = () => openDetail(+card.dataset.id);
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); }});
+  });
+  root.querySelectorAll('.fav-btn').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleFav(+btn.dataset.fav); }));
+}
+function renderCards(){
+  const g2 = document.getElementById('gallery2');
+  const split = visible.length > 16;
+  if(!split){
+    gallery.innerHTML = visible.map(cardHtml).join('');
+    g2.hidden = true; g2.innerHTML = '';
+    bindCards(gallery);
+    return;
+  }
+  const mid = Math.ceil(visible.length / 2);
+  gallery.innerHTML = visible.slice(0, mid).map(cardHtml).join('');
+  g2.innerHTML = visible.slice(mid).map(cardHtml).join('');
+  g2.hidden = false;
+  bindCards(gallery); bindCards(g2);
+}
+renderCards();
+document.getElementById('btnLeft').onclick = () => gallery.scrollBy({left:-280,behavior:'smooth'});
+document.getElementById('btnRight').onclick = () => gallery.scrollBy({left:280,behavior:'smooth'});
+let dragging=false,startX=0,startScroll=0;
+gallery.addEventListener('mousedown', e => { dragging=true; gallery.classList.add('dragging'); startX=e.pageX; startScroll=gallery.scrollLeft; });
+window.addEventListener('mouseup', () => { dragging=false; gallery.classList.remove('dragging'); });
+gallery.addEventListener('mousemove', e => { if(!dragging) return; gallery.scrollLeft = startScroll - (e.pageX-startX)*1.3; });
+let currentFilter = 'all';
+const charites = ["Aglaya","Eufrosina","Talía","Euclea","Eutenia","Eufeme","Filofrósine"];
+const horai = ["Eunomía","Dike","Irene"];
+function applyView(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  if(currentFilter==='favs') visible = daimones.filter(d => favs.includes(d.id));
+  else if(currentFilter==='charites') visible = daimones.filter(d => charites.includes(d.name));
+  else if(currentFilter==='horai') visible = daimones.filter(d => horai.includes(d.name));
+  else visible = currentFilter==='all' ? daimones.slice() : daimones.filter(d => d.category===currentFilter);
+  if(q) visible = visible.filter(d => [d.name, d.revelation, d.greek].join(' ').toLowerCase().includes(q));
+  renderCards();
+  gallery.scrollLeft = 0;
+}
+document.getElementById('filterSelect').addEventListener('change', (e) => {
+  document.getElementById('gameScreen').classList.remove('open');
+  currentFilter = e.target.value;
+  applyView();
+});
+document.getElementById('searchInput').addEventListener('input', applyView);
+document.getElementById('searchForm').addEventListener('submit', e => e.preventDefault());
+const screen = document.getElementById('detailScreen');
+const panel = document.getElementById('detailContent');
+const bg = document.getElementById('detailBg');
+async function paintDetail(){
+  const d = visible[openIndex]; if(!d) return;
+  // Foto nueva buscada en este momento (Source = aleatoria real e inmediata)
+  const bgUrl = getFreshRandomPhoto('nature,forest,meadow,sky,landscape');
+  bg.style.backgroundImage = `url('${bgUrl}')`;
+  // Si hay API key, intentamos mejorar con la oficial en segundo plano
+  if (UNSPLASH_ACCESS_KEY && UNSPLASH_ACCESS_KEY !== 'TU_ACCESS_KEY_AQUI') {
+    fetchRandomUnsplash('nature,forest,meadow,sky,landscape').then(u => {
+      if (u && openIndex >= 0) bg.style.backgroundImage = `url('${u}')`;
+    }).catch(()=>{});
+  }
+panel.innerHTML = `<img class="portrait" src="${d.photo}" alt="${d.name}"><h2>${d.name}</h2><p class="subtitle">${d.greek} · ${d.revelation}</p>
+  <div class="facts"><div><strong>ORIGEN</strong>${d.parentage}</div><div><strong>DOMINIO</strong>${d.domain}</div><div><strong>SIGNO</strong>${d.symbol}</div></div>
+  <div class="block"><strong>RELATO</strong>${d.relato}</div>
+  <div class="block"><strong>CITA</strong>${d.quote}</div>
+  <div class="block"><strong>DÓNDE LAS RECORDABAN</strong>${d.place}</div>
+  <div class="block"><strong>SÉQUITO, FIESTA Y CASA</strong>${d.extra}</div>
+  ${kinBlock(d)}
+  <p class="source">${d.source}. Resumen a partir de Theoi Greek Mythology y las fuentes que allí se citan.</p>
+  <button class="back-btn" id="favDetail" type="button">${isFav(d.id)?'Quitar de favoritos':'Añadir a favoritos'}</button>
+  <button class="back-btn" id="backBtn">Regresar</button>`;
+  document.getElementById('backBtn').onclick = closeDetail;
+  document.getElementById('favDetail').onclick = () => { toggleFav(d.id); paintDetail(); };
+  panel.querySelectorAll('[data-kin]').forEach(btn => btn.addEventListener('click', () => openDetail(+btn.dataset.kin)));
+  }
+function openDetail(id){ openIndex = visible.findIndex(d => d.id===id); if(openIndex<0) return; paintDetail(); screen.classList.add('visible'); document.body.style.overflow='hidden'; }
+function closeDetail(){ screen.classList.remove('visible'); document.body.style.overflow=''; openIndex=-1; }
+function step(dir){ if(openIndex<0) return; openIndex = (openIndex+dir+visible.length)%visible.length; paintDetail(); }
+document.getElementById('prevDaimon').onclick = () => step(-1);
+document.getElementById('nextDaimon').onclick = () => step(1);
+const gameScreen = document.getElementById('gameScreen');
+const gameBoard = document.getElementById('gameBoard');
+const gameMeta = document.getElementById('gameMeta');
+let lockBoard=false, flipped=[], moves=0, matched=0, pairGoal=6, gameStart=0, gameTimer=null;
+function shuffle(list){ const arr=list.slice(); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+function paintGameMeta(done){
+  const sec = Math.floor((Date.now()-gameStart)/1000);
+  const clock = String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0');
+  const level = pairGoal===6?1:pairGoal===12?2:3;
+  gameMeta.innerHTML = done
+    ? `<span class="timer">Completado en ${clock}</span> · ${moves} movimientos`
+    : `Nivel ${level} · ${pairGoal} parejas · <span class="timer">${clock}</span> · Movimientos: ${moves}`;
+}
+function startGame(){
+  const pool=[]; while(pool.length<pairGoal) pool.push(...daimones);
+  const deck = shuffle(pool).slice(0,pairGoal);
+  const cards = shuffle(deck.concat(deck.map(d=>({...d}))));
+  moves=0; matched=0; flipped=[]; lockBoard=false; gameStart=Date.now(); clearInterval(gameTimer); gameTimer=setInterval(paintGameMeta, 500);
+  gameBoard.classList.toggle('wide', pairGoal>6);
+  gameBoard.classList.toggle('wider', pairGoal>12);
+  paintGameMeta();
+  gameBoard.innerHTML = cards.map(d => `<button class="mem-card" type="button" data-id="${d.id}"><span class="face back">?</span><span class="face front"><img src="${d.photo}" alt=""><span>${d.name}</span></span></button>`).join('');
+  gameBoard.querySelectorAll('.mem-card').forEach(card => card.addEventListener('click', () => flipCard(card)));
+}
+function flipCard(card){
+  if(lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  card.classList.add('flipped'); flipped.push(card); if(flipped.length<2) return;
+  moves++; paintGameMeta();
+  const [a,b]=flipped;
+  if(a.dataset.id===b.dataset.id){ a.classList.add('matched'); b.classList.add('matched'); sound.ok(); flipped=[]; matched++; if(matched===pairGoal){ clearInterval(gameTimer); paintGameMeta(true); sound.win(); burst('COMPLETADO'); } return; }
+  lockBoard=true; sound.bad(); setTimeout(()=>{ a.classList.remove('flipped'); b.classList.remove('flipped'); flipped=[]; lockBoard=false; }, 800);
+}
+document.getElementById('openGame').onclick = () => { document.querySelectorAll('.side-menu button').forEach(b=>b.classList.remove('active')); document.getElementById('openGame').classList.add('active'); startGame(); gameScreen.classList.add('open'); };
+
+const kinGroups = [
+  { note:"Hermanas, las Cárites antiguas de Hesíodo.", names:["Aglaya","Eufrosina","Talía"] },
+  { note:"Hermanas, las Cárites jóvenes de la tradición órfica.", names:["Euclea","Eutenia","Eufeme","Filofrósine"] },
+  { note:"Hermanas, las Horas.", names:["Eunomía","Dike","Irene"] },
+  { note:"Hermanas, Musas de esta enciclopedia.", names:["Clío","Erato","Calíope","Polimnia"] },
+  { note:"Hermanas, hijas de Estigia y Palante.", names:["Nike","Bia"] }
+];
+const kinNotes = {
+  "Febe":"Hija de Urano y Gea. Con su hermano Ceo es madre de Leto y Asteria. Por Leto es abuela de Apolo y Artemisa. Por Asteria es abuela de Hécate.",
+  "Mnemósine":"Hija de Urano y Gea. Con Zeus es madre de las nueve Musas. En esta página están Clío, Erato, Calíope y Polimnia.",
+  "Temis":"Hija de Urano y Gea. Con Zeus es madre de las Horas: Eunomía, Dike e Irene. En otra tradición también es madre de las Moiras.",
+  "Tea":"Con Hiperión es madre de Helios, Selene y Eos, el sol, la luna y la aurora.",
+  "Filotes":"Hermana de Hipnos, Tánatos, las Moiras y Éris.",
+  "Elpis":"No tiene padres en el relato.",
+  "Oizís":"Hermana de Filotes, Ápate y Némesis en la lista de la Noche.",
+  "Eris":"Madre, entre otros, de Ponos, Lete, Disnomía y Ate.",
+  "Dike":"Hermana de la primera tríada de las Horas.",
+  "Pistis":"No tiene un nacimiento fijo.",
+  "Tique":"Oceánide en Hesíodo, hija de Océano y Tetis. Otras listas la hacen hija de Zeus.",
+  "Aglaya":"Hija de Zeus y la Oceánide Eurínome. En la tradición órfica es esposa de Hefesto y madre de las Cárites jóvenes.",
+  "Eufrosina":"Hermana de las Gracias.",
+  "Talía":"Hermana de las Gracias.",
+  "Ananque":"En la tradición órfica se enrosca con Cronos, el Tiempo. Algunas listas la hacen madre de las Moiras.",
+  "Eleuteria":"Figura de la ciudad, sin padres míticos claros.",
+  "Eunomía":"Hermana de la primera tríada de las Horas.",
+  "Irene":"Hermana de la primera tríada de las Horas. A veces lleva en brazos a Pluto, la riqueza.",
+  "Aidos":"Sin padres fijos.",
+  "Némesis":"Hija de Nix en Hesíodo. En otros relatos es madre de Helena.",
+  "Ápate":"Hija de Nix. Hermana de Filotes y Oizís.",
+  "Ate":"Hija de Éris en Hesíodo.",
+  "Hibris":"Sin un nacimiento único. Algunas listas tardías la hacen madre de Pan.",
+  "Lete":"Hija de Éris en Hesíodo.",
+  "Nike":"Hija de Estigia y Palante. Hermana de Bía, Cratos y Zelo.",
+  "Disnomía":"Hija de Éris.",
+  "Penia":"En el Banquete de Platón se une a Poros y de esa unión nace Eros.",
+  "Cacia":"En la mitología tradicional es hija de Nix (la noche) y hermana de fuerzas oscuras como la discordia, mientras que en los textos gnósticos nace de Autadia (la arrogancia) y el Primer Ángel, siendo hermana de la envidia, los celos y la lujuria.",
+  "Arete":"Ess considerada hija de Zeus en la tradición que vincula la virtud directamente con el linaje divino soberano, mientras que en la tradición alegórica es hija de Praxídice (la deidad de la justicia ejecutiva), naciendo junto a sus hermanas para personificar el orden y el castigo justo..",
+  "Enío":"Hija de Zeus y Hera en la tradición.",
+  "Bia":"Hija de Estigia y Palante. Hermana de Nike, Cratos y Zelo.",
+  "Psique":"En Apuleyo se une a Eros. Es madre de Hedone. Hija de reyes mortales.",
+  "Peito":"Oceánide en una lista de Hesíodo.",
+  "Hygeia":"Hija de Asclepio y Epíone. Hermana de Yaso, Panacea, Acéso, Egle y Aquelois.",
+  "Hedone":"Hija de Eros y Psique, en el relato de Apuleyo.",
+  "Harmonia":"Hija de Ares y Afrodita. Esposa de Cadmo. Recibe un collar en su boda.",
+  "Leucotea":"Antes fue Ino, hija de Cadmo y Harmonia. Madre de Palemón.",
+  "Euclea":"En la tradición órfica, hija de Hefesto y Aglaya. Hermana de Eutenia, Eufeme y Filofrósine.",
+  "Eutenia":"Hermana de Euclea, Eufeme y Filofrósine. Hija de Hefesto y Aglaya en esa tradición.",
+  "Eufeme":"Hermana de Euclea, Eutenia y Filofrósine.",
+  "Filofrósine":"Hermana de Euclea, Eutenia y Eufeme.",
+  "Clío":"Hija de Zeus y Mnemósine. Hermana de las Musas.",
+  "Erato":"Hija de Zeus y Mnemósine. Hermana de Clío, Calíope y Polimnia.",
+  "Calíope":"Hija de Zeus y Mnemósine. En Hesíodo es la más excelente. En relatos posteriores es madre de Orfeo.",
+  "Polimnia":"Hija de Zeus y Mnemósine. Hermana de las otras Musas de esta página.",
+  "Euporia":"Integrante de la segunda generación de Horas. Hija de Zeus y Temis.",
+  "Ortosia":"Integrante de la segunda generación de Horas. Hija de Zeus y Temis.",
+  "Ferusa":"Integrante de la segunda generación de Horas. Hija de Zeus y Temis.",
+  "Hesiquia":"Sin padres en el relato.",
+  "Ioke":"Sin padres en el relato.",
+  "Eupraxia":"Hija de Peitharchia y Soter.",
+  "Ececheiria":"Sin padres en el relato.",
+  "Ptoqueia":"Suele ser considerada hermana de Penia, Aporia y Amecania.",
+  "Calocagathia":"Sin padres en el relato.",
+  "Disebia":"Hija de Nix en algunas tradiciones.",
+  "Angelia":"Considerada hija de Hermes.",
+  "Diceosina":"Considerada hija de Dike y Dikastis en algunas versiones.",
+  "Aporia":"Suele ser considerada hermana de Penia, Ptoqueia y Amecania:.",
+  "Demokratia":"No tiene mito de nacimiento.",
+  "Alala":"Considerada hija de Pólemo, la personificación de la guerra.",
+  "Amecania":"Suele ser considerada hermana de Penia, Aporia y Ptoqueia.",
+  "Aletheia":"Hija de Zeus, según el poeta Píndaro. Creación de Prometeo, según las Fábulas de Esopo.",
+  "Alke":"En algunas tradiciones mitológicas, es hija de Cibeles y Olimpo.",
+  "Esquine":"Considerada la hija del titán Prometeo según los escritos del poeta lírico Píndaro.",
+  "Aergia":"Considerada hija de Éter y Gea.",
+  "Soteria":"Va con Zeus Soter, no como su hija.",
+  "Eusebia":"Considera una hija nacida directamente de Zeus. En otras versiones teogónicas se sugiere que emergió de Nyx.",
+  "Adicia":"Incierto entre Nix y Eris.",
+  "Anaideia":"Incierto entre Nix y Eris.",
+  "Adefagia":"Sin padres en el relato.",
+  "Eleos":"Según el escritor Higino, es hija de Érebo (la oscuridad) y Nix.",
+  "Manía":"Considerada hija de Nix (engendrada de Urano).",
+  "Homonia":"Según el escritor Mnaseas en su tratado Sobre Europa, es hija de Soter y de Praxídike. Otra tradición menor la considerada hija del rey tebano Ógigo.",
+  "Lyssa":"Considerada hija de Nix (engendrada de Urano). En Eurípides obedece a Hera. No es su hija.",
+  "Sofrosina":"Aunque usualmente no se le asignan padres, en ocasiones se le ha considerado hija de Nix y Érebo.",
+  "Telete":"Considerada hija de Dioniso y Nicea. Media hermana de Yaco.",
+  "Mete":"Compañera del cortejo de Dioniso, considerada su hija en algunos relatos.",
+  "Astrea":"En poesía tardía, hija de Zeus y Temis. Algunos autores la consideran hija de Astreo (el dios del cielo estrellado) y Eos (la diosa de la aurora.",
+  "Poena":"Según los escritos de autores de tradición clásica, es hija de Éter y de Gea.",
+  "Feme":"Virgilio la describe como hija de Gea, Sófocles la asocia con Elpis, mientras que para Homero y Hesíodo carece de padres definidos.",
+  "Paregoros":"Sin padres en el relato.",
+  "Peitharchia":"Esposa de Soter y madre de Eupraxia.",
+  "Frice":"Sin padres en el relato.",
+  "Prófasis":"Considerada hija de Epimeteo."
+};
+function kinBlock(d){
+  const group = kinGroups.find(g => g.names.includes(d.name));
+  const links = group ? group.names.filter(n => n !== d.name).map(n => {
+    const item = daimones.find(x => x.name === n);
+    return item ? `<button class="back-btn" type="button" data-kin="${item.id}">${item.name}</button>` : n;
+  }).join(' ') : '';
+  const note = kinNotes[d.name] || 'No hay un parentesco claro para esta ficha en las fuentes usadas aquí.';
+  return `<div class="block"><strong>PARENTESCO</strong>${note}${group ? ' ' + group.note : ''}${links ? ' ' + links : ''}</div>`;
+}
+function toggleFav(id){
+  favs = favs.includes(id) ? favs.filter(x => x !== id) : favs.concat(id);
+  localStorage.setItem('daimones-fav', JSON.stringify(favs));
+  if(currentFilter==='favs') applyView();
+  else renderCards();
+}
+let quizScore = 0, quizCount = 0, quizLock = false, quizStart = 0, quizTimer = null;
+function paintQuizMeta(extra){
+  const sec = Math.floor((Date.now()-quizStart)/1000);
+  const clock = String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0');
+  document.getElementById('quizMeta').textContent = (extra? extra+' · ' : '') + `Aciertos: ${quizScore} de ${quizCount} · ${clock}`;
+}
+function askQuiz(){
+  quizLock = false;
+  const correct = daimones[Math.floor(Math.random()*daimones.length)];
+  const opts = [correct];
+  while(opts.length < 3){
+    const pick = daimones[Math.floor(Math.random()*daimones.length)];
+    if(!opts.some(x => x.id === pick.id)) opts.push(pick);
+  }
+  opts.sort(() => Math.random() - .5);
+  paintQuizMeta();
+  document.getElementById('quizBox').innerHTML = `<p class="subtitle" style="font-size:1.35rem">¿Quién es la figura de «${correct.revelation}»?</p>` +
+    opts.map(o => `<button class="back-btn quiz-opt" type="button" data-ok="${o.id===correct.id}" data-id="${o.id}">${o.name}</button>`).join('');
+  document.getElementById('quizBox').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+    if(quizLock) return;
+    quizLock = true;
+    quizCount += 1;
+    const ok = btn.dataset.ok === 'true';
+    if(ok){ quizScore += 1; sound.ok(); } else sound.bad();
+    document.getElementById('quizBox').querySelectorAll('button').forEach(b => {
+      if(b.dataset.ok === 'true') b.classList.add('good');
+      else if(b === btn) b.classList.add('bad');
+    });
+    paintQuizMeta(ok ? 'Correcto' : 'Incorrecto. Era ' + correct.name);
+    if(quizCount>0 && quizCount%5===0){ sound.win(); burst(quizScore + ' ACIERTOS'); }
+    setTimeout(askQuiz, 1100);
+  }));
+}
+document.getElementById('openQuiz').onclick = () => {
+  quizScore = 0; quizCount = 0; quizStart = Date.now();
+  clearInterval(quizTimer); quizTimer = setInterval(()=>paintQuizMeta(), 500);
+  document.getElementById('quizScreen').classList.add('open');
+  askQuiz();
+};
+document.getElementById('closeQuiz').onclick = () => { clearInterval(quizTimer); document.getElementById('quizScreen').classList.remove('open'); };
+document.getElementById('openGloss').onclick = () => document.getElementById('glossScreen').classList.add('open');
+document.getElementById('closeGloss').onclick = () => document.getElementById('glossScreen').classList.remove('open');
+document.getElementById('openFavs').onclick = () => {
+  document.querySelectorAll('.side-menu button').forEach(b => b.classList.remove('active'));
+  document.getElementById('openFavs').classList.add('active');
+  currentFilter = 'favs';
+  applyView();
+};
+
+
+const playlist = ['audio/fondo1.mp3','audio/fondo2.mp3','audio/fondo3.mp3','audio/fondo.mp3'];
+let track = 0;
+const bgm = document.getElementById('bgm');
+function loadTrack(i){
+  track = (i + playlist.length) % playlist.length;
+  bgm.src = playlist[track];
+}
+bgm.addEventListener('ended', async () => {
+  loadTrack(track + 1);
+  try { await bgm.play(); } catch(e){}
+});
+bgm.addEventListener('error', () => {
+  if(track < playlist.length - 1){ loadTrack(track + 1); if(!bgm.paused) bgm.play().catch(()=>{}); }
+});
+document.getElementById('musicBtn').onclick = async () => {
+  const btn = document.getElementById('musicBtn');
+  if(!bgm.paused && bgm.currentTime > 0){
+    bgm.pause();
+    btn.textContent = '♫ Música';
+    return;
+  }
+  if(!bgm.src) loadTrack(0);
+  try {
+    await bgm.play();
+    btn.textContent = '♫ Pausa';
+  } catch (err) {
+    btn.textContent = '♫ Sin audio';
+    alert('No se pudo reproducir. En la carpeta audio pon fondo1.mp3, fondo2.mp3 y fondo3.mp3, o un solo fondo.mp3.');
+  }
+};
+document.getElementById('enterPage').onclick = () => document.getElementById('prologue').classList.add('hidden');
+document.getElementById('openNotes').onclick = () => { document.getElementById('notesScreen').classList.add('open'); };
+document.getElementById('closeNotes').onclick = () => { document.getElementById('notesScreen').classList.remove('open'); };
+document.getElementById('closeGame').onclick = () => { gameScreen.classList.remove('open'); document.querySelector('.side-menu button[data-filter="all"]').classList.add('active'); };
+document.getElementById('level1').onclick = () => { pairGoal=6; startGame(); };
+document.getElementById('level2').onclick = () => { pairGoal=12; startGame(); };
+document.getElementById('level3').onclick = () => { pairGoal=18; startGame(); };
+document.getElementById('restartGame').onclick = startGame;
+document.addEventListener('keydown', e => {
+  const open = screen.classList.contains('visible');
+  if(open && e.key==='Escape') closeDetail();
+  else if(open && e.key==='ArrowLeft') step(-1);
+  else if(open && e.key==='ArrowRight') step(1);
+  else if(!open && e.key==='ArrowLeft') gallery.scrollBy({left:-280,behavior:'smooth'});
+  else if(!open && e.key==='ArrowRight') gallery.scrollBy({left:280,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
